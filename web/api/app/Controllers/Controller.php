@@ -29,19 +29,8 @@ class Controller
 		{
 			return $this->container->get($property);
 		}
-	}
-	
-	/**
-	 * Helper method for Slim 4 compatibility - writes JSON to response body
-	 * This method maintains backward compatibility with Slim 3 write() method
-	 * @param mixed $response PSR-7 Response object
-	 * @param string $data Data to write to response body
-	 * @return mixed Response object
-	 */
-	protected function writeToResponse($response, $data)
-	{
-		$response->getBody()->write($data);
-		return $response;
+		// PHP 8.4 compatibility: Return null for non-existent properties instead of undefined behavior
+		return null;
 	}
 	//////////////////////////////////////
 	////INITIAL DATA FUNCTION////START//

@@ -50,10 +50,14 @@ class EmailEngine
 
     // if ($name == 'feedback') $this->mail->Subject = $this->default_titles[$name] .' '. ucfirst($variables['type']);
 
-    // Extract variables individually to avoid using deprecated extract() function
-    // This is safer and compatible with PHP 8.4+
+    // PHP 8.4 compatibility: Extract variables individually to avoid using deprecated extract() function
+    // Only allow safe variable names to prevent security issues
+    $allowedKeys = ['title', 'username', 'password', 'subject', 'qr', 'type', 'message', 'data'];
     foreach ($variables as $key => $value) {
-      $$key = $value;
+      // Security: Only create variables for allowed keys
+      if (in_array($key, $allowedKeys, true)) {
+        $$key = $value;
+      }
     }
     
     ob_start();
