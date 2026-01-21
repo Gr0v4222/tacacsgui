@@ -40,9 +40,10 @@ class APICheckerCtrl extends Controller
 	private function createTable($database = 'default', $tableName, $tableColumns)
 	{
 		$this->db::connection($database)->getSchemaBuilder()->create($tableName, function($table) use ($tableColumns){
-			if ( ! @$tableColumns['unsetId'] ) $table->increments('id');
+			// PHP 8.4 compatibility: Use isset() instead of @ operator
+			if ( !isset($tableColumns['unsetId']) || !$tableColumns['unsetId'] ) $table->increments('id');
 			else unset($tableColumns['unsetId']);
-			$timestamp = ( @$tableColumns['unsetTimestamp'] ) ? false : true;
+			$timestamp = (isset($tableColumns['unsetTimestamp']) && $tableColumns['unsetTimestamp']) ? false : true;
 			unset($tableColumns['unsetTimestamp']);
 			$this->db::getSchemaBuilder()->disableForeignKeyConstraints();
 			foreach($tableColumns as $columnName => $columnAttr){
@@ -243,7 +244,8 @@ class APICheckerCtrl extends Controller
 		//Sel self-check script//
 		CMDRun::init()->setCmd(MAINSCRIPT)->setAttr( [ 'self-test'] )->get();
 		/////////////////////////
-		$updateFlag = (@$req->getParam('update')) ? 1 : 0;
+		// PHP 8.4 compatibility: Use null coalescing operator
+		$updateFlag = ($req->getParam('update') !== null) ? 1 : 0;
 		//var_dump( $this->db::getSchemaBuilder()->getColumnType('tac_users', 'username') ); die;
 		//var_dump($req->getParam('update'));die();
 		$data['messages'] = array( );
@@ -278,8 +280,9 @@ class APICheckerCtrl extends Controller
 				else if(!$this->db::connection($database)->getSchemaBuilder()->hasColumns($tableName,array_keys($tableColumns)))
 				{
 					$preColumnName = ($this->db::connection($database)->getSchemaBuilder()->hasColumn($tableName,'id')) ? 'id' : '';
-					if ( @$tableColumns['unsetId'] ) unset($tableColumns['unsetId']);
-					$timestamp = ( @$tableColumns['unsetTimestamp'] ) ? false : true;
+					// PHP 8.4 compatibility: Use isset() instead of @ operator
+					if ( isset($tableColumns['unsetId']) && $tableColumns['unsetId'] ) unset($tableColumns['unsetId']);
+					$timestamp = (isset($tableColumns['unsetTimestamp']) && $tableColumns['unsetTimestamp']) ? false : true;
 					unset($tableColumns['unsetTimestamp']);
 					//IN EVERY TABLE THE FIRST COLUMN IS id//
 					//ADD COLUMNS CHECK//

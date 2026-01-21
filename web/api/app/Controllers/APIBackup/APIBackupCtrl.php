@@ -224,8 +224,11 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 
 		$allParams = $req->getParams();
 		$update = [];
-		if (@$allParams['target'] == 'tcfgSet' OR @$allParams['target']  == 'apicfgSet')
-		$update[$allParams['target']] = $allParams['set'];
+		// PHP 8.4 compatibility: Use isset() instead of @ operator
+		$target = $allParams['target'] ?? null;
+		if ($target === 'tcfgSet' || $target === 'apicfgSet') {
+			$update[$target] = $allParams['set'] ?? null;
+		}
 		$data['test'] = $update;
 		$data['result'] = APIBackup::where('id',1)->update($update);
 

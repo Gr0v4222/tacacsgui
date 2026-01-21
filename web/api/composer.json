@@ -14,7 +14,6 @@
         "doctrine/dbal": "^3.0",
         "phpmailer/phpmailer": "^6.8",
         "guzzlehttp/guzzle": "^7.0",
-        "webmozart/json": "^1.2",
         "adldap2/adldap2": "^10.0",
         "symfony/yaml": "^6.0",
         "tuupola/slim-jwt-auth": "^3.7"
