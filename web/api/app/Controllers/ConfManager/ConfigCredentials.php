@@ -21,7 +21,7 @@ class ConfigCredentials extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -29,13 +29,13 @@ class ConfigCredentials extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -46,7 +46,7 @@ class ConfigCredentials extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -55,7 +55,7 @@ class ConfigCredentials extends Controller
 
 		$data['credential'] = 1;
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function getEdit($req,$res)
@@ -70,7 +70,7 @@ class ConfigCredentials extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -78,13 +78,13 @@ class ConfigCredentials extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -95,12 +95,12 @@ class ConfigCredentials extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['credential'] = Conf_Credentials::where('id', $req->getParam('id'))->first()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ////////////////////////////////////////////////////////////
 	public function postEdit($req,$res)
@@ -115,7 +115,7 @@ class ConfigCredentials extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -123,13 +123,13 @@ class ConfigCredentials extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -141,7 +141,7 @@ class ConfigCredentials extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -150,7 +150,7 @@ class ConfigCredentials extends Controller
 
 		$data['save'] = 1;
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	///////////////////////////////////////////////////////////
 	public function postDel($req,$res)
@@ -165,7 +165,7 @@ class ConfigCredentials extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -173,13 +173,13 @@ class ConfigCredentials extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -191,12 +191,12 @@ class ConfigCredentials extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['result'] = Conf_Credentials::where( 'id', $req->getParam('id') )->delete();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
   public function postDatatables($req,$res)
@@ -211,7 +211,7 @@ class ConfigCredentials extends Controller
     #check error#
     if ($_SESSION['error']['status']){
       $data['error']=$_SESSION['error'];
-      return $res -> withStatus(401) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
     }
     //INITIAL CODE////END//
 
@@ -223,7 +223,7 @@ class ConfigCredentials extends Controller
       $data['data'] = [];
       $data['recordsTotal'] = 0;
       $data['recordsFiltered'] = 0;
-      return $res -> withStatus(200) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
     }
     //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -263,7 +263,7 @@ class ConfigCredentials extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 
     // $data['columns'] = $columns;
     // $queries = [];
@@ -340,7 +340,7 @@ class ConfigCredentials extends Controller
   	// 	//Some additional parameters for Datatables
   	// 	$data['draw']=intval( $params['draw'] );
 		//
-  	// 	return $res -> withStatus(200) -> write(json_encode($data));
+  	// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
 	public function getList($req,$res)
@@ -355,14 +355,14 @@ class ConfigCredentials extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(3, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -372,7 +372,7 @@ class ConfigCredentials extends Controller
 
 			$data['results'] = Conf_Credentials::select(['id','name AS text'])->whereIn('id', $id)->get();
 			// if (  !count($data['results']) ) $data['results'] = null;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//////////////////////
 		////LIST OF GROUPS////
@@ -387,7 +387,7 @@ class ConfigCredentials extends Controller
 
 		$data['results']=$query->orderBy('name')->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 }//END OF CLASS//

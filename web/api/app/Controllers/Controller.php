@@ -25,10 +25,12 @@ class Controller
 
 	public function __get($property)
 	{
-		if($this->container->{$property})
+		if($this->container->has($property))
 		{
-			return $this->container->{$property};
+			return $this->container->get($property);
 		}
+		// PHP 8.4 compatibility: Return null for non-existent properties instead of undefined behavior
+		return null;
 	}
 	//////////////////////////////////////
 	////INITIAL DATA FUNCTION////START//

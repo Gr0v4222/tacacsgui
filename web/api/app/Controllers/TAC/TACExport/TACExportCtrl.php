@@ -21,7 +21,7 @@ class TACExportCtrl extends Controller
   	#check error#
   	if ($_SESSION['error']['status']){
   		$data['error']=$_SESSION['error'];
-  		return $res -> withStatus(401) -> write(json_encode($data));
+  		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   	}
   	//INITIAL CODE////END//
     shell_exec( TAC_ROOT_PATH . '/main.sh delete temp');

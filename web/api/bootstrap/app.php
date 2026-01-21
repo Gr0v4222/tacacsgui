@@ -7,6 +7,10 @@ ini_set('memory_limit', '1024M'); // or you could use 1G
 require __DIR__ . '/../constants.php';
 
 use Respect\Validation\Validator as v;
+use Slim\Factory\AppFactory;
+use DI\Container;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 session_start();
 
@@ -20,8 +24,13 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use tgui\Controllers\APIHA\HAGeneral;
 use Illuminate\Database\Capsule\Manager as Capsule;
-$app = new \Slim\App([
-	'settings' => [
+
+// Create Container
+$container = new Container();
+
+// Database settings
+$container->set('settings', function() {
+	return [
 		'displayErrorDetails' => true,
 		'db' => [
 			'default' => [
@@ -45,165 +54,173 @@ $app = new \Slim\App([
 				'prefix' => ''
 			]
 		]
-	],
-]);
-
-$container = $app->getContainer();
+	];
+});
 
 $capsule = new Capsule;
-$capsule->addConnection($container['settings']['db']['default'], 'default');
-$capsule->addConnection($container['settings']['db']['logging'], 'logging');
+$capsule->addConnection($container->get('settings')['db']['default'], 'default');
+$capsule->addConnection($container->get('settings')['db']['logging'], 'logging');
 $capsule->setAsGlobal();
 $capsule->schema();
 $capsule->bootEloquent();
 
-$container['db'] = function($container) use ($capsule) {
+$container->set('db', function() use ($capsule) {
 	return $capsule;
-};
+});
 
-$container['validator'] = function($container) {
+$container->set('validator', function($container) {
 	return new \tgui\Validation\Validator;
-};
+});
 
-$container['HomeController'] = function($container) {
+$container->set('HomeController', function($container) {
 	return new \tgui\Controllers\HomeController($container);
-};
+});
 
-$container['AuthController'] = function($container) {
+$container->set('AuthController', function($container) {
 	return new \tgui\Controllers\Auth\AuthController($container);
-};
+});
 
-$container['APIUsersCtrl'] = function($container) {
+$container->set('APIUsersCtrl', function($container) {
 	return new \tgui\Controllers\API\APIUsers\APIUsersCtrl($container);
-};
+});
 
-$container['APIUpdateCtrl'] = function($container) {
+$container->set('APIUpdateCtrl', function($container) {
 	return new \tgui\Controllers\APIUpdate\APIUpdateCtrl($container);
-};
+});
 
-$container['APIUserGrpsCtrl'] = function($container) {
+$container->set('APIUserGrpsCtrl', function($container) {
 	return new \tgui\Controllers\API\APIUserGrps\APIUserGrpsCtrl($container);
-};
+});
 
-$container['APISettingsCtrl'] = function($container) {
+$container->set('APISettingsCtrl', function($container) {
 	return new \tgui\Controllers\APISettings\APISettingsCtrl($container);
-};
+});
 
-$container['APIHACtrl'] = function($container) {
+$container->set('APIHACtrl', function($container) {
 	return new \tgui\Controllers\APIHA\APIHACtrl($container);
-};
+});
 
-$container['APINotificationCtrl'] = function($container) {
+$container->set('APINotificationCtrl', function($container) {
 	return new \tgui\Controllers\APINotification\APINotificationCtrl($container);
-};
-$container['APIDevCtrl'] = function($container) {
+});
+$container->set('APIDevCtrl', function($container) {
 	return new \tgui\Controllers\APIDev\APIDevCtrl($container);
-};
+});
 
-$container['TACDevicesCtrl'] = function($container) {
+$container->set('TACDevicesCtrl', function($container) {
 	return new \tgui\Controllers\TAC\TACDevices\TACDevicesCtrl($container);
-};
-$container['TACDeviceGrpsCtrl'] = function($container) {
+});
+$container->set('TACDeviceGrpsCtrl', function($container) {
 	return new \tgui\Controllers\TAC\TACDeviceGrps\TACDeviceGrpsCtrl($container);
-};
-$container['TACUsersCtrl'] = function($container) {
+});
+$container->set('TACUsersCtrl', function($container) {
 	return new \tgui\Controllers\TAC\TACUsers\TACUsersCtrl($container);
-};
+});
 
-$container['TACUserGrpsCtrl'] = function($container) {
+$container->set('TACUserGrpsCtrl', function($container) {
 	return new \tgui\Controllers\TAC\TACUserGrps\TACUserGrpsCtrl($container);
-};
+});
 
-$container['TACACLCtrl'] = function($container) {
+$container->set('TACACLCtrl', function($container) {
 	return new \tgui\Controllers\TAC\TACACL\TACACLCtrl($container);
-};
+});
 
-$container['TACServicesCtrl'] = function($container) {
+$container->set('TACServicesCtrl', function($container) {
 	return new \tgui\Controllers\TAC\TACServices\TACServicesCtrl($container);
-};
+});
 
-$container['TACCMDCtrl'] = function($container) {
+$container->set('TACCMDCtrl', function($container) {
 	return new \tgui\Controllers\TAC\TACCMD\TACCMDCtrl($container);
-};
+});
 
-$container['TACConfigCtrl'] = function($container) {
+$container->set('TACConfigCtrl', function($container) {
 	return new \tgui\Controllers\TACConfig\TACConfigCtrl($container);
-};
+});
 
-$container['TACExportCtrl'] = function($container) {
+$container->set('TACExportCtrl', function($container) {
 	return new \tgui\Controllers\TAC\TACExport\TACExportCtrl($container);
-};
-$container['TACImportCtrl'] = function($container) {
+});
+$container->set('TACImportCtrl', function($container) {
 	return new \tgui\Controllers\TAC\TACImport\TACImportCtrl($container);
-};
+});
 
-$container['ObjAddress'] = function($container) {
+$container->set('ObjAddress', function($container) {
 	return new \tgui\Controllers\Obj\ObjAddress\ObjAddress($container);
-};
-$container['APICheckerCtrl'] = function($container) {
+});
+$container->set('APICheckerCtrl', function($container) {
 	return new \tgui\Controllers\APIChecker\APICheckerCtrl($container);
-};
-$container['TACReportsCtrl'] = function($container) {
+});
+$container->set('TACReportsCtrl', function($container) {
 	return new \tgui\Controllers\TACReports\TACReportsCtrl($container);
-};
-$container['APILoggingCtrl'] = function($container) {
+});
+$container->set('APILoggingCtrl', function($container) {
 	return new \tgui\Controllers\APILogging\APILoggingCtrl($container);
-};
-$container['APIBackupCtrl'] = function($container) {
+});
+$container->set('APIBackupCtrl', function($container) {
 	return new \tgui\Controllers\APIBackup\APIBackupCtrl($container);
-};
-$container['APIDownloadCtrl'] = function($container) {
+});
+$container->set('APIDownloadCtrl', function($container) {
 	return new \tgui\Controllers\APIDownload\APIDownloadCtrl($container);
-};
-$container['MAVISLDAP'] = function($container) {
+});
+$container->set('MAVISLDAP', function($container) {
 	return new \tgui\Controllers\MAVIS\MAVISLDAP\MAVISLDAPCtrl($container);
-};
-$container['MAVISLocal'] = function($container) {
+});
+$container->set('MAVISLocal', function($container) {
 	return new \tgui\Controllers\MAVIS\MAVISLocal\MAVISLocalCtrl($container);
-};
-$container['MAVISOTP'] = function($container) {
+});
+$container->set('MAVISOTP', function($container) {
 	return new \tgui\Controllers\MAVIS\MAVISOTP\MAVISOTPCtrl($container);
-};
-$container['MAVISSMS'] = function($container) {
+});
+$container->set('MAVISSMS', function($container) {
 	return new \tgui\Controllers\MAVIS\MAVISSMS\MAVISSMSCtrl($container);
-};
+});
 
-$container['ConfManager'] = function($container) {
+$container->set('ConfManager', function($container) {
 	return new \tgui\Controllers\ConfManager\ConfManager($container);
-};
-$container['ConfModels'] = function($container) {
+});
+$container->set('ConfModels', function($container) {
 	return new \tgui\Controllers\ConfManager\ConfModels($container);
-};
-$container['ConfDevices'] = function($container) {
+});
+$container->set('ConfDevices', function($container) {
 	return new \tgui\Controllers\ConfManager\ConfDevices($container);
-};
-$container['ConfGroups'] = function($container) {
+});
+$container->set('ConfGroups', function($container) {
 	return new \tgui\Controllers\ConfManager\ConfGroups($container);
-};
-$container['ConfigCredentials'] = function($container) {
+});
+$container->set('ConfigCredentials', function($container) {
 	return new \tgui\Controllers\ConfManager\ConfigCredentials($container);
-};
-$container['ConfQueries'] = function($container) {
+});
+$container->set('ConfQueries', function($container) {
 	return new \tgui\Controllers\ConfManager\ConfQueries($container);
-};
+});
 
-$container['HAGeneral'] = function($container) {
+$container->set('HAGeneral', function($container) {
 	return new \tgui\Controllers\APIHA\HAGeneral($container);
-};
-$container['HAMaster'] = function($container) {
+});
+$container->set('HAMaster', function($container) {
 	return new \tgui\Controllers\APIHA\HAMaster($container);
-};
-$container['HASlave'] = function($container) {
+});
+$container->set('HASlave', function($container) {
 	return new \tgui\Controllers\APIHA\HASlave($container);
-};
+});
 
-/*$container['csrf'] = function($container) {
+/*$container->set('csrf', function($container) {
 	return new \Slim\Csrf\Guard;
-};*/
+});*/
 
-$container['auth'] = function($container) {
+$container->set('auth', function($container) {
 	return new \tgui\Auth\Auth;
-};
+});
+
+// Create App with container
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+
+// Add Routing Middleware
+$app->addRoutingMiddleware();
+
+// Add Error Middleware
+$errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 //$app->add(new \tgui\Middleware\ValidationErrorsMiddleware($container));
 //$app->add(new \tgui\Middleware\OldInputMiddleware($container));
@@ -221,11 +238,11 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
 				$data["message"] = $arguments["message"];
 				return $response
 						->withHeader("Content-Type", "application/json")
-						->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+						->withBody(\Slim\Psr7\Factory\StreamFactory::create(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)));
 		}
 ]));
 
-//$app->add($container->csrf); //Turn on CSRF for all project//
+//$app->add($container->get('csrf')); //Turn on CSRF for all project//
 
 v::with('tgui\\Validation\\Rules\\');
 

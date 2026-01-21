@@ -23,14 +23,14 @@ class TACConfigCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(6, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -51,7 +51,7 @@ class TACConfigCtrl extends Controller
 		$data['tac_general']=array_values(ConfigPatterns::tacGeneralPartGen($html));
 		$data['tac_acl']=array_values(ConfigPatterns::tacACLPartGen($html));
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	////////////////////////////////////////////////////
 	////////////////////////////////////////////////////
@@ -205,20 +205,20 @@ class TACConfigCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(6))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -239,7 +239,7 @@ class TACConfigCtrl extends Controller
 				$logEntry=array('action' => 'tacacs test conf', 'obj_name' => 'tacacs configuration', 'section' => 'tacacs configuration', 'message' => 502);
 				$this->APILoggingCtrl->makeLogEntry($logEntry);
 				///LOGGING//end//
-				return $res -> withStatus(200) -> withHeader('Content-type', $contentTypeOutput) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200)->withHeader('Content-type', $contentTypeOutput);
 			}
 			///LOGGING//start//
 			$logEntry = array('action' => 'tacacs test conf', 'obj_name' => 'tacacs configuration', 'section' => 'tacacs configuration', 'message' => 501);
@@ -259,7 +259,7 @@ class TACConfigCtrl extends Controller
 				$data['backup'] = $doBackup = $this->APIBackupCtrl->makeBackup(['make' => 'tcfg']);
 			if ( !$doBackup['status'] AND $unstoppable) {
 					$data['applyStatus'] = ['error' => true, 'message' => $doBackup['message'], 'errorLine' => 0];
-					return $res -> withStatus(200) -> withHeader('Content-type', $contentTypeOutput) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(200)->withHeader('Content-type', $contentTypeOutput);
 				}
 			}
 			///LOGGING//
@@ -297,7 +297,7 @@ class TACConfigCtrl extends Controller
 			$data['changeConfiguration']= ( !$data['applyStatus']['error'] ) ? $this->changeConfigurationFlag(['unset' => 1]) : 0;
 
 			$this->APILoggingCtrl->makeLogEntry($logEntry);
-			return $res -> withStatus(200) -> withHeader('Content-type', $contentTypeOutput) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200)->withHeader('Content-type', $contentTypeOutput);
 		}
 
 		if($req->getParam('confTest') == 'on')
@@ -308,17 +308,17 @@ class TACConfigCtrl extends Controller
 			$logEntry= ($data['confTest']['error']) ? array('action' => 'tacacs test conf', 'obj_name' => 'tacacs configuration', 'section' => 'tacacs configuration', 'message' => 502) : array('action' => 'tacacs test conf', 'obj_name' => 'tacacs configuration', 'section' => 'tacacs configuration', 'message' => 501);
 			$this->APILoggingCtrl->makeLogEntry($logEntry);
 			///LOGGING//end//
-			return $res -> withStatus(200) -> withHeader('Content-type', $contentTypeOutput) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200)->withHeader('Content-type', $contentTypeOutput);
 		}
 
 
 		if ($req->getParam('contentType') != 'html')
 		{
-			return $res -> withStatus(200) -> withHeader('Content-type', $contentTypeOutput) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200)->withHeader('Content-type', $contentTypeOutput);
 		}
 		else
 		{
-			return $res -> withStatus(200) -> withHeader('Content-type', $contentTypeOutput) -> write($output);
+			$res->getBody()->write($output); return $res->withStatus(200)->withHeader('Content-type', $contentTypeOutput);
 		}
 	}
 	//////////////CREATE CONFIGURATION////END//
@@ -334,7 +334,7 @@ class TACConfigCtrl extends Controller
 	// 	#check error#
 	// 	if ($_SESSION['error']['status']){
 	// 		$data['error']=$_SESSION['error'];
-	// 		return $res -> withStatus(401) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 	// 	}
 	// 	//INITIAL CODE////END//
 	//
@@ -342,13 +342,13 @@ class TACConfigCtrl extends Controller
 	// 	if( $this->shouldIStopThis() )
 	// 	{
 	// 		$data['error'] = $this->shouldIStopThis();
-	// 		return $res -> withStatus(400) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 	// 	}
 	// 	//CHECK SHOULD I STOP THIS?//END//
 	// 	//CHECK ACCESS TO THAT FUNCTION//START//
 	// 	if(!$this->checkAccess(6))
 	// 	{
-	// 		return $res -> withStatus(403) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 	// 	}
 	// 	//CHECK ACCESS TO THAT FUNCTION//END//
 	//
@@ -360,7 +360,7 @@ class TACConfigCtrl extends Controller
 	// 	}
 	// 	$data['server_response'] = $ha->sendConfigurationApply([ 'checksum'=>$data['checksum'], 'sid' => $req->getParam('sid')]);
 	//
-	// 	return $res -> withStatus(200) -> write(json_encode($data));
+	// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// }
 	public function postConfigGen($req,$res)
 	{
@@ -374,11 +374,11 @@ class TACConfigCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	///////////////////////////////////////////////////
 	////////GET EDIT GLOBAL PARAMETERS//////////////
@@ -394,18 +394,18 @@ class TACConfigCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$data['global_variables']=TACGlobalConf::select()->first();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	/////////////////////////////////////////////////
 	////////POST EDIT GLOBAL PARAMETERS//////////////
@@ -421,13 +421,13 @@ class TACConfigCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -447,7 +447,7 @@ class TACConfigCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -460,7 +460,7 @@ class TACConfigCtrl extends Controller
 		$logEntry=array('action' => 'edit', 'obj_name' => 'tacacs global settings', 'obj_id' => '', 'section' => 'tacacs global settings', 'message' => 505);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	///////////////////////////////////////////////
 	////////POST EDIT GLOBAL PARAMETERS//////////////
@@ -476,13 +476,13 @@ class TACConfigCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		// if(!$this->checkAccess(6))
 		// {
-		// 	return $res -> withStatus(403) -> write(json_encode($data));
+		// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		// }
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$allParams = $req->getParams();
@@ -490,7 +490,7 @@ class TACConfigCtrl extends Controller
 		if ( empty($allParams['target']) ){
 			$data['error']['status']=true;
 			$data['error']['message']='Bad Request';
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		switch ($allParams['target']) {
@@ -498,13 +498,13 @@ class TACConfigCtrl extends Controller
 				//CHECK ACCESS TO THAT FUNCTION//START//
 				if(!$this->checkAccess(2, true))
 				{
-					return $res -> withStatus(403) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 				}
 				//CHECK ACCESS TO THAT FUNCTION//END//
 				if ( !isset($allParams['id']) OR $allParams['id'] == 0){
 					$data['error']['status']=true;
 					$data['error']['message']='Bad Request';
-					return $res -> withStatus(200) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 				}
 				$data['output'] = ConfigPatterns::tacDevicesPartGen(true, $allParams['id']);
 				break;
@@ -512,13 +512,13 @@ class TACConfigCtrl extends Controller
 				//CHECK ACCESS TO THAT FUNCTION//START//
 				if(!$this->checkAccess(3, true))
 				{
-					return $res -> withStatus(403) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 				}
 				//CHECK ACCESS TO THAT FUNCTION//END//
 				if ( !isset($allParams['id']) OR $allParams['id'] == 0){
 					$data['error']['status']=true;
 					$data['error']['message']='Bad Request';
-					return $res -> withStatus(200) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 				}
 				$data['output'] = ConfigPatterns::tacDeviceGroupsPartGen(true, $allParams['id']);
 				break;
@@ -526,13 +526,13 @@ class TACConfigCtrl extends Controller
 				//CHECK ACCESS TO THAT FUNCTION//START//
 				if(!$this->checkAccess(4, true))
 				{
-					return $res -> withStatus(403) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 				}
 				//CHECK ACCESS TO THAT FUNCTION//END//
 				if ( !isset($allParams['id']) OR $allParams['id'] == 0){
 					$data['error']['status']=true;
 					$data['error']['message']='Bad Request';
-					return $res -> withStatus(200) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 				}
 				$data['output'] = ConfigPatterns::tacUsersPartGen(true, $allParams['id']);
 				break;
@@ -540,13 +540,13 @@ class TACConfigCtrl extends Controller
 				//CHECK ACCESS TO THAT FUNCTION//START//
 				if(!$this->checkAccess(5, true))
 				{
-					return $res -> withStatus(403) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 				}
 				//CHECK ACCESS TO THAT FUNCTION//END//
 				if ( !isset($allParams['id']) OR $allParams['id'] == 0){
 					$data['error']['status']=true;
 					$data['error']['message']='Bad Request';
-					return $res -> withStatus(200) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 				}
 				$data['output'] = ConfigPatterns::tacUserGroupsPartGen(true, $allParams['id']);
 				break;
@@ -554,13 +554,13 @@ class TACConfigCtrl extends Controller
 				//CHECK ACCESS TO THAT FUNCTION//START//
 				if(!$this->checkAccess(11, true))
 				{
-					return $res -> withStatus(403) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 				}
 				//CHECK ACCESS TO THAT FUNCTION//END//
 				if ( !isset($allParams['id']) OR $allParams['id'] == 0){
 					$data['error']['status']=true;
 					$data['error']['message']='Bad Request';
-					return $res -> withStatus(200) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 				}
 				$data['output'] = ConfigPatterns::tacACLPartGen(true, $allParams['id']);
 				break;
@@ -568,13 +568,13 @@ class TACConfigCtrl extends Controller
 				//CHECK ACCESS TO THAT FUNCTION//START//
 				if(!$this->checkAccess(11, true))
 				{
-					return $res -> withStatus(403) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 				}
 				//CHECK ACCESS TO THAT FUNCTION//END//
 				if ( !isset($allParams['id']) OR $allParams['id'] == 0){
 					$data['error']['status']=true;
 					$data['error']['message']='Bad Request';
-					return $res -> withStatus(200) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 				}
 				$data['output'] = ConfigPatterns::tacService(true, $allParams['id']);
 				break;
@@ -582,23 +582,23 @@ class TACConfigCtrl extends Controller
 				//CHECK ACCESS TO THAT FUNCTION//START//
 				if(!$this->checkAccess(11, true))
 				{
-					return $res -> withStatus(403) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 				}
 				//CHECK ACCESS TO THAT FUNCTION//END//
 				if ( !isset($allParams['id']) OR $allParams['id'] == 0){
 					$data['error']['status']=true;
 					$data['error']['message']='Bad Request';
-					return $res -> withStatus(200) -> write(json_encode($data));
+					$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 				}
 				$data['output'] = ConfigPatterns::tacCMDAttr(true, $allParams['id']);
 				break;
 			default:
 				$data['error']['status']=true;
 				$data['error']['message']='Bad Request';
-				return $res -> withStatus(200) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	///////////////////////////////////////////////
 	////////POST Daemon CONFIG//////////////
@@ -614,14 +614,14 @@ class TACConfigCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		$data['tacacsStatusMessage'] = trim(shell_exec('sudo '. TAC_ROOT_PATH .'/main.sh tac_plus status brief'));
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(6))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -648,7 +648,7 @@ class TACConfigCtrl extends Controller
 				break;
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	///////////////////////////////////////////////
 }##END OF CLASS

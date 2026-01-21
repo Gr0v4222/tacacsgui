@@ -31,20 +31,20 @@ class APIUserGrpsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(8))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -56,7 +56,7 @@ class APIUserGrpsCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -83,7 +83,7 @@ class APIUserGrpsCtrl extends Controller
 		if ( $this->APIBackupCtrl->apicfgSet() )
 		$data['backup'] = $this->APIBackupCtrl->makeBackup(['make' => 'apicfg']);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Add New User Group	###############END###########
 ################################################
@@ -101,14 +101,14 @@ class APIUserGrpsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(8))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -120,7 +120,7 @@ class APIUserGrpsCtrl extends Controller
 			leftJoin('ldap_groups as ld','ld.id','=','ldap_id')->
 			select(['ld.cn as text', 'ld.id as id'])->where('api_grp_id',$req->getParam('id'))->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	#########	POST Edit User Group	#########
@@ -137,20 +137,20 @@ class APIUserGrpsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(8))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -163,7 +163,7 @@ class APIUserGrpsCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -197,7 +197,7 @@ class APIUserGrpsCtrl extends Controller
 		if ( $this->APIBackupCtrl->apicfgSet() )
 		$data['backup'] = $this->APIBackupCtrl->makeBackup(['make' => 'apicfg']);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Edit User Group	###############END###########
 ################################################
@@ -215,20 +215,20 @@ class APIUserGrpsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(8))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -243,7 +243,7 @@ class APIUserGrpsCtrl extends Controller
 		if ( $this->APIBackupCtrl->apicfgSet() )
 		$data['backup'] = $this->APIBackupCtrl->makeBackup(['make' => 'apicfg']);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Delete User Group	###############END###########
 ################################################
@@ -261,7 +261,7 @@ class APIUserGrpsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -273,7 +273,7 @@ class APIUserGrpsCtrl extends Controller
 			$data['data'] = [];
 			$data['recordsTotal'] = 0;
 			$data['recordsFiltered'] = 0;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -302,7 +302,7 @@ class APIUserGrpsCtrl extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 ########	User Group Datatables	###############END###########
@@ -338,13 +338,13 @@ class APIUserGrpsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		$data['rights']=$this->rightsList;
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 ########	User Group Rights List	###############END###########
@@ -363,14 +363,14 @@ class APIUserGrpsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(8, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -380,7 +380,7 @@ class APIUserGrpsCtrl extends Controller
 
 			$data['results'] = APIUserGrps::select(['id','name AS text'])->whereIn('id', $id)->get();
 			// if (  !count($data['results']) ) $data['results'] = null;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//////////////////////
 		////LIST OF GROUPS////
@@ -395,7 +395,7 @@ class APIUserGrpsCtrl extends Controller
 
 		$data['results']=$query->orderBy('name','asc')->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	List User Group	###############END###########
 ################################################

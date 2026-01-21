@@ -36,17 +36,19 @@ class HomeController extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			$res -> getBody() -> write(json_encode($data));
-			return 0;
+			$res->getBody()->write(json_encode($data));
+			return $res;
 		}
 		//INITIAL CODE////END//
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data));
+		return $res->withStatus(200);
 	}
 
 	public function postHome($req, $res)
 	{
 		$data['info']='unset';
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data));
+		return $res->withStatus(200);
 	}
 }

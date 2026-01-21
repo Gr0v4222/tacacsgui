@@ -79,7 +79,7 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -137,7 +137,7 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		//$data['make'] = shell_exec(TAC_ROOT_PATH . '/backup.sh make '. DB_USER . ' ' . DB_PASSWORD . ' '. DB_NAME );//make
 		//ls backups/database/ -lr | grep -Eo "(20[1-7][0-9]-[0-1][0-9]-[0-3][0-9]_[0-2][0-9]:[0-6][0-9]:[0-6][0-9].+$)" | sed '11,20!d'
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	###################	POST BACKUP DATATABLES ########END##
@@ -155,13 +155,13 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(9))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -172,7 +172,7 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		$logEntry=array('action' => 'delete', 'obj_name' => $req->getParam('name'), 'section' => 'api backup', 'message' => 602);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	###################	POST BACKUP DELETE ########END##
 	#####################################################
@@ -189,13 +189,13 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		$data['settings'] = APIBackup::select()->find(1);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	###################	GET BACKUP SETTINGS ########END##
 	#####################################################
@@ -212,24 +212,27 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(9))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
 		$allParams = $req->getParams();
 		$update = [];
-		if (@$allParams['target'] == 'tcfgSet' OR @$allParams['target']  == 'apicfgSet')
-		$update[$allParams['target']] = $allParams['set'];
+		// PHP 8.4 compatibility: Use isset() instead of @ operator
+		$target = $allParams['target'] ?? null;
+		if ($target === 'tcfgSet' || $target === 'apicfgSet') {
+			$update[$target] = $allParams['set'] ?? null;
+		}
 		$data['test'] = $update;
 		$data['result'] = APIBackup::where('id',1)->update($update);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	###################	POST BACKUP SETTINGS ########END##
 	###################################################
@@ -246,13 +249,13 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(9))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$type = $req->getParam('type');
@@ -264,7 +267,7 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		$logEntry=array('action' => 'restore', 'obj_name' => $req->getParam('name'), 'section' => 'api backup', 'message' => 603);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	###################	POST BACKUP RESTORE ########END##
 	###################################################
@@ -326,13 +329,13 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(9))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -347,9 +350,9 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 			if ( file_exists($uploaddir. $req->getParam('name')) ) {
 				$data['error']['status']=true;
 				$data['error']['message']='File with the same name exist';
-				return $res -> withStatus(200) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 			}
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		foreach ($_FILES as $key => $value) {
@@ -360,7 +363,7 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		if ( file_exists($uploaddir.$fileName) ) {
 			$data['error']['status']=true;
 			$data['error']['message']='File with the same name exist';
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$data['result'] = 'Error';
 		foreach($_FILES as $index => $file)
@@ -379,7 +382,7 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
       }
     }
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	###################	POST BACKUP UPLOAD ########END##
 	###################################################
@@ -396,13 +399,13 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(9))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -411,7 +414,7 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 		if ( empty($allParams['type']) ){
 			$data['error']['status']=true;
 			$data['error']['message']='Type backup error';
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		if ( !isset($allParams['diff']) ){
@@ -429,10 +432,10 @@ private $listOfTacacsReportsTables = '--tables tac_log_accounting tac_log_author
 			default:
 				$data['error']['status']=true;
 				$data['error']['message']='Type backup error';
-				return $res -> withStatus(200) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	###################	POST BACKUP MAKE ########END##
 }

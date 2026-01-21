@@ -28,7 +28,7 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -50,7 +50,7 @@ class ConfManager extends Controller
 				break;
 		}
 		$data['info'] = $message;
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	#########	POST Add New User	#########
 	public function postToggle($req,$res)
@@ -65,13 +65,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(7))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -113,7 +113,7 @@ class ConfManager extends Controller
 				break;
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Add New User	###############END###########
 #################
@@ -129,13 +129,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$filename = $req->getParam('name');
@@ -146,7 +146,7 @@ class ConfManager extends Controller
 			setCmd(MAINSCRIPT)->
 			setAttr(['run', 'cmd', $this->GIT_PATH, $request_attr])->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	// public function postTacgui($req,$res)
 	// {
@@ -160,13 +160,13 @@ class ConfManager extends Controller
 	// 	#check error#
 	// 	if ($_SESSION['error']['status']){
 	// 		$data['error']=$_SESSION['error'];
-	// 		return $res -> withStatus(401) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 	// 	}
 	// 	//INITIAL CODE////END//
 	// 	//CHECK ACCESS TO THAT FUNCTION//START//
 	// 	if(!$this->checkAccess(1))
 	// 	{
-	// 		return $res -> withStatus(403) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 	// 	}
 	// 	//CHECK ACCESS TO THAT FUNCTION//END//
 	// 	$validation = $this->validator->validate($req, [
@@ -178,7 +178,7 @@ class ConfManager extends Controller
 	// 	if ($validation->failed()){
 	// 		$data['error']['status']=true;
 	// 		$data['error']['validation']=$validation->error_messages;
-	// 		return $res -> withStatus(200) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// 	}
 	//
 	// 	$ip = $req->getParam('ip');
@@ -207,7 +207,7 @@ class ConfManager extends Controller
 	// 		) AS total_u GROUP BY username
 	// 	"));
 	//
-	// 	return $res -> withStatus(200) -> write(json_encode($data));
+	// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// }
 	public function postTacguiAAA($req,$res)
 	{
@@ -221,13 +221,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$validation = $this->validator->validate($req, [
@@ -240,7 +240,7 @@ class ConfManager extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$ip = $req->getParam('ip');
@@ -280,7 +280,7 @@ class ConfManager extends Controller
 				break;
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	public function postDiffBrief($req,$res)
 	{
@@ -294,13 +294,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$validation = $this->validator->validate($req, [
@@ -313,7 +313,7 @@ class ConfManager extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$filename = preg_replace('/^\//', '', $req->getParam('filename') );
@@ -330,7 +330,7 @@ class ConfManager extends Controller
 					['run','cmd',$this->GIT_PATH,'--show='.$req->getParam('hash_a').':'.$filename])->
 				get();
 
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		if ( $req->getParam('type') == 'native') {
 			$data['native'] = CMDRun::init()->
@@ -345,7 +345,7 @@ class ConfManager extends Controller
 					'--diff='.$req->getParam('hash_b').':'.$req->getParam('hash_a').':'.$filename
 					])->
 				get();
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$request = [
@@ -364,11 +364,11 @@ class ConfManager extends Controller
 			setAttr($request);
 		$data['cmd_diff'] = $diff_cmd->showCMD();
 		$data['diff'] = false;
-		#return $res -> withStatus(200) -> write(json_encode($data));
+		#$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		$diff_full = $diff_cmd->get();
 		if ( empty( $diff_full ) ){
 
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$diff_full = explode( PHP_EOL, $diff_full );
 
@@ -592,7 +592,7 @@ class ConfManager extends Controller
 
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Add New User	###############END###########
 #################
@@ -608,13 +608,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -628,7 +628,7 @@ class ConfManager extends Controller
 			select(['cd.*','addr.address as ipaddress','td.name as tacdevice'])->
 			where('cd.id',$dev_id)->first();
 		if (!$dev)
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		if (!empty($dev->ipaddress)) $dev->ipaddress = explode('/', $dev->ipaddress)[0];
 		$ip = $dev->ipaddress;
 		$date_start = date('Y-m-d H:i:s', min( strtotime($req->getParam('date_a')), strtotime($req->getParam('date_b')) ) );
@@ -656,7 +656,7 @@ class ConfManager extends Controller
 			) AS total_u GROUP BY username
 		"));
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 	public function getDiffList($req,$res)
 	{
@@ -670,13 +670,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$data['results'] = [];
@@ -686,14 +686,14 @@ class ConfManager extends Controller
 		$data['path'] = '/opt/tgui_data/confManager/configs'.$params['extra']->file;
 		$params['extra']->file = preg_replace('/^\//', '', $params['extra']->file);
 		if (!$data['isFile'] OR empty($params['extra']->file)){
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$cmd = CMDRun::init()->
 			setCMD($this->GIT_PATH)->setAttr('--commit-list='.$params['extra']->file);
 		$data['cmd'] = $cmd->showCMD();
 		$tempData = $cmd->get();
 		if (empty(trim($tempData))){
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$tempData = explode(PHP_EOL, $tempData);
 		for ($i=0; $i < count($tempData); $i++) {
@@ -733,7 +733,7 @@ class ConfManager extends Controller
 		//
 		// $data['pagination'] = ['more'=> count($data['results']) == 10];
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 	public function postMore($req,$res)
 	{
@@ -747,13 +747,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -766,7 +766,7 @@ class ConfManager extends Controller
 			setCmd($this->GIT_PATH)->
 			setAttr($request_attr)->get() );
 		if ( isset($data['more'][1]) ) $data['more'][1] = date( 'Y-m-d H:i:s', $data['more'][1]);
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 	public function getCron($req,$res)
 	{
@@ -780,13 +780,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$cron = [
@@ -804,12 +804,12 @@ class ConfManager extends Controller
 			file_put_contents( '/opt/tgui_data/confManager/cron.yaml', $yaml);
 			$data['file'] = 'creating';
 			$data['cron'] = $cron;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$data['file'] = 'created';
 		$data['cron'] = Yaml::parseFile('/opt/tgui_data/confManager/cron.yaml');
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 	public function postCron($req,$res)
 	{
@@ -823,13 +823,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$allParams = $req->getParams();
@@ -838,7 +838,7 @@ class ConfManager extends Controller
 		$this->createConfig();
 		$data['crontab'] = $this->startCron($allParams);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 
 
@@ -854,13 +854,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$cmd = CMDRun::init()->setCmd('/opt/tacacsgui/plugins/ConfigManager/cm_ls.sh')->
@@ -881,7 +881,7 @@ class ConfManager extends Controller
 		}
 		$data['list'] = $list_out;
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function getDirExploer($req,$res)
@@ -896,13 +896,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$cmd = CMDRun::init()->setCmd('/opt/tacacsgui/plugins/ConfigManager/cm_ls.sh')->
@@ -913,7 +913,7 @@ class ConfManager extends Controller
 		if (count($list) == 1 and empty($list[0])) $list = [];
 		$data['list'] = $list;
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postDirAdd($req,$res)
@@ -928,13 +928,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$validation = $this->validator->validate($req, [
@@ -946,12 +946,12 @@ class ConfManager extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['status'] = mkdir($req->getParam('path'));
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postDirMove($req,$res)
@@ -966,13 +966,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$validation = $this->validator->validate($req, [
@@ -984,12 +984,12 @@ class ConfManager extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['status'] = rename($req->getParam('path_old'), $req->getParam('path'));
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postDirDel($req,$res)
@@ -1004,13 +1004,13 @@ class ConfManager extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$validation = $this->validator->validate($req, [
@@ -1020,13 +1020,13 @@ class ConfManager extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['status'] = CMDRun::init()->setCmd('rm')->setAttr(['-rf', $req->getParam('path')])->get();//rmdir($req->getParam('path'));
 		$data['status'] = empty($data['status']);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 
@@ -1043,7 +1043,7 @@ class ConfManager extends Controller
 // 	#check error#
 // 	if ($_SESSION['error']['status']){
 // 		$data['error']=$_SESSION['error'];
-// 		return $res -> withStatus(401) -> write(json_encode($data));
+// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 // 	}
 // 	//INITIAL CODE////END//
 //
@@ -1055,7 +1055,7 @@ class ConfManager extends Controller
 // 		$data['data'] = [];
 // 		$data['recordsTotal'] = 0;
 // 		$data['recordsFiltered'] = 0;
-// 		return $res -> withStatus(200) -> write(json_encode($data));
+// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 // 	}
 // 	//CHECK ACCESS TO THAT FUNCTION//END//
 //
@@ -1166,7 +1166,7 @@ class ConfManager extends Controller
 // 	//Some additional parameters for Datatables
 // 	$data['draw']=intval( $params['draw'] );
 //
-// 	return $res -> withStatus(200) -> write(json_encode($data));
+// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 // }
 
 
@@ -1182,7 +1182,7 @@ public function postLogDatatables($req,$res)
 	#check error#
 	if ($_SESSION['error']['status']){
 		$data['error']=$_SESSION['error'];
-		return $res -> withStatus(401) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 	}
 	//INITIAL CODE////END//
 
@@ -1194,7 +1194,7 @@ public function postLogDatatables($req,$res)
 		$data['data'] = [];
 		$data['recordsTotal'] = 0;
 		$data['recordsFiltered'] = 0;
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -1226,7 +1226,7 @@ public function postLogDatatables($req,$res)
 
 	$data['data'] = $tempData->get()->toArray();
 
-	return $res -> withStatus(200) -> write(json_encode($data));
+	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// $data['columns'] = $columns;
 	// $queries = [];
 	// $data['filter'] = [];
@@ -1299,7 +1299,7 @@ public function postLogDatatables($req,$res)
 	// 	//Some additional parameters for Datatables
 	// 	$data['draw']=intval( $params['draw'] );
 	//
-	// 	return $res -> withStatus(200) -> write(json_encode($data));
+	// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 
 
@@ -1316,19 +1316,19 @@ public function getPreview($req,$res)
 	#check error#
 	if ($_SESSION['error']['status']){
 		$data['error']=$_SESSION['error'];
-		return $res -> withStatus(401) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 	}
 	//INITIAL CODE////END//
 	//CHECK ACCESS TO THAT FUNCTION//START//
 	if(!$this->checkAccess(1))
 	{
-		return $res -> withStatus(403) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 	}
 	//CHECK ACCESS TO THAT FUNCTION//END//
 
 	$data['preview'] = $this->createConfig(['write'=>false, 'preview'=>true]);
 	//$data['preview2'] = $this->createConfig();
-	return $res -> withStatus(200) -> write(json_encode($data));
+	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 ################################################
 	public function createConfig( $params = array() )

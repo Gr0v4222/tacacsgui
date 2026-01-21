@@ -42,7 +42,7 @@ class APILoggingCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -77,7 +77,7 @@ class APILoggingCtrl extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	###################	POST LOGGING DATATABLES ########END##
 	public function postLoggingDelete($req,$res)
@@ -92,14 +92,14 @@ class APILoggingCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$allParams = $req->getParams();
@@ -114,12 +114,12 @@ class APILoggingCtrl extends Controller
 
 		if (empty($period)){
 			$data['error']['status']=true;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$data['period'] = $period;
 		$data['result'] = ($period == 'all') ?  APILogging::delete() : APILogging::where('created_at','<=',$period)->delete();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postDelSpecial($req,$res)
@@ -134,14 +134,14 @@ class APILoggingCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$validation = $this->validator->validate($req, [
@@ -156,7 +156,7 @@ class APILoggingCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -166,7 +166,7 @@ class APILoggingCtrl extends Controller
 		if ( $range AND strtotime($allParams['date_from']) > strtotime($allParams['date_to'])){
 			$data['error']['status']=true;
 			$data['error']['validation']=['date_from' => ['Date From can\'t be more Date To']];
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$table = ($allParams['tacacs_type'] == 1) ? 'tac_log_authorization' : 'tac_log_authentication';
@@ -188,7 +188,7 @@ class APILoggingCtrl extends Controller
 		$data['result'] = $query->where([['username',$allParams['username']],['nac',$allParams['nac']]])->delete();
 
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postMissAdd($req,$res)
@@ -203,20 +203,20 @@ class APILoggingCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -231,14 +231,14 @@ class APILoggingCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['rule'] = APILoggingMissRules::create($req->getParams());
 
 		$data['file'] = $this->createMissFile();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postMissDel($req,$res)
@@ -253,20 +253,20 @@ class APILoggingCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -277,14 +277,14 @@ class APILoggingCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['result'] = APILoggingMissRules::where('id',$req->getParam('id'))->delete();
 
 		$data['file'] = $this->createMissFile();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postMissTable($req,$res)
@@ -299,14 +299,14 @@ class APILoggingCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -350,7 +350,7 @@ END AS tacacs_type')
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function createMissFile(){

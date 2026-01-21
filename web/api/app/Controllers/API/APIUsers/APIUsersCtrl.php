@@ -27,20 +27,20 @@ class APIUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -67,7 +67,7 @@ class APIUsersCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -89,7 +89,7 @@ class APIUsersCtrl extends Controller
 		if ( $this->APIBackupCtrl->apicfgSet() )
 		$data['backup'] = $this->APIBackupCtrl->makeBackup(['make' => 'apicfg']);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Add New User	###############END###########
 ################################################
@@ -107,13 +107,13 @@ class APIUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if( !$this->checkAccess(1) )
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$data['user']=APIUsers::leftJoin('api_user_groups as ug', 'ug.id','=','group')->
@@ -121,7 +121,7 @@ class APIUsersCtrl extends Controller
 		$data['user']->group = [['id' => $data['user']->group, 'text' => $data['user']->gname ]];
 		unset($data['user']->gname);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	#########	POST Edit User	#########
@@ -138,7 +138,7 @@ class APIUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 
 		//INITIAL CODE////END//
@@ -147,13 +147,13 @@ class APIUsersCtrl extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if( !$this->checkAccess(1) )
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$password = APIUsers::where('id', $req->getParam('id'))->first()->password;
@@ -179,7 +179,7 @@ class APIUsersCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -202,7 +202,7 @@ class APIUsersCtrl extends Controller
 		if ( $this->APIBackupCtrl->apicfgSet() )
 		$data['backup'] = $this->APIBackupCtrl->makeBackup(['make' => 'apicfg']);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Edit User	###############END###########
 ################################################
@@ -220,26 +220,26 @@ class APIUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
 		if ($_SESSION['uid'] == $req->getParam('id'))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 
 		$data['result']=APIUsers::where('id',$req->getParam('id'))->delete();
@@ -254,7 +254,7 @@ class APIUsersCtrl extends Controller
 		if ( $this->APIBackupCtrl->apicfgSet() )
 		$data['backup'] = $this->APIBackupCtrl->makeBackup(['make' => 'apicfg']);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Delete User	###############END###########
 ################################################
@@ -272,7 +272,7 @@ class APIUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -303,7 +303,7 @@ class APIUsersCtrl extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 ########	User Datatables	###############END###########
@@ -322,14 +322,14 @@ class APIUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		$data['decrypt'] = $req->getAttribute('decoded_token_data');
 
 		if ($data['decrypt']['id'] != $_SESSION['uid'] ){
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 
 		$data['user']=APIUsers::select()->where([
@@ -341,7 +341,7 @@ class APIUsersCtrl extends Controller
 		$data['token'] = JWT::encode(['id' => $data['user']->id, 'username' => $data['user']->username], "supersecretkeyyoushouldnotcommittogithub", "HS256");
 
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Get User Info	###############END###########
 ########	Get User Status	###############START###########
@@ -358,13 +358,13 @@ class APIUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		$data['changeConfiguration']=$this->db->table('tac_global_settings')->select('changeFlag')->first()->changeFlag;
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Get User Status	###############END###########
 ######################################################

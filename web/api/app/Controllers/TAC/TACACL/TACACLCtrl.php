@@ -43,20 +43,20 @@ class TACACLCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(12))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -65,7 +65,7 @@ class TACACLCtrl extends Controller
 		if ( $validation->failed() ){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['acl'] = TACACL::create( ['name' => $req->getParam('name')] );
@@ -80,7 +80,7 @@ class TACACLCtrl extends Controller
 		$logEntry=array('action' => 'add', 'obj_name' => $data['acl']->name, 'obj_id' => $data['acl']->id, 'section' => 'tacacs acl', 'message' => 207);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Add New ACL	###############END###########
 ################################################
@@ -98,14 +98,14 @@ class TACACLCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(12))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -143,7 +143,7 @@ class TACACLCtrl extends Controller
 
 		$data['acl']->ace = $data['ace'];
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	#########	POST Edit ACL	#########
@@ -159,20 +159,20 @@ class TACACLCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(12))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -181,7 +181,7 @@ class TACACLCtrl extends Controller
 		if ( $validation->failed() ){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		TACACL::where('id', $req->getParam('id'))->update(['name' => $req->getParam('name')]);
@@ -197,7 +197,7 @@ class TACACLCtrl extends Controller
 		$logEntry=array('action' => 'edit', 'obj_name' => $req->getParam('name'), 'obj_id' => $req->getParam('id'), 'section' => 'tacacs acl', 'message' => 307);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Edit ACL	###############END###########
 ################################################
@@ -215,20 +215,20 @@ class TACACLCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(12))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -244,7 +244,7 @@ class TACACLCtrl extends Controller
 		$data['footprints_users']=TACUsers::where([['acl','=',$req->getParam('id')]])->update(['acl' => '0']);
 		$data['footprints_groups']=TACUserGrps::where([['acl','=',$req->getParam('id')]])->update(['acl' => '0']);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Delete ACL	###############END###########
 ################################################
@@ -261,13 +261,13 @@ class TACACLCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(12))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$data['clear'] = shell_exec( TAC_ROOT_PATH . '/main.sh delete temp');
@@ -288,7 +288,7 @@ class TACACLCtrl extends Controller
 
 		$data['filename']=$filename;
 		sleep(3);
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	CSV	###############END###########
 ################################################
@@ -306,7 +306,7 @@ class TACACLCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -318,7 +318,7 @@ class TACACLCtrl extends Controller
 			$data['data'] = [];
 			$data['recordsTotal'] = 0;
 			$data['recordsFiltered'] = 0;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -356,7 +356,7 @@ class TACACLCtrl extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 ########	ACL Datatables	###############END###########
@@ -376,7 +376,7 @@ class TACACLCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		///IF GROUPID SET///
@@ -385,7 +385,7 @@ class TACACLCtrl extends Controller
 
 			$data['results'] = TACACL::select(['id','name AS text'])->whereIn('id', $id)->get();
 			// if (  !count($data['results']) ) $data['results'] = null;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//////////////////////
 		////LIST OF GROUPS////
@@ -400,7 +400,7 @@ class TACACLCtrl extends Controller
 
 		$data['results']=$query->orderBy('name','asc')->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	List ACL	###############END###########
 ################################################
@@ -418,7 +418,7 @@ class TACACLCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -456,7 +456,7 @@ class TACACLCtrl extends Controller
 		select(['ts.name as text', 'ts.id as id'])->
 		where('acl',$req->getParam('id'))->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Reference List ACL	###############END###########
 ################################################

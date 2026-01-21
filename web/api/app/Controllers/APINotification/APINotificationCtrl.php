@@ -22,14 +22,14 @@ class APINotificationCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
     //CHECK ACCESS TO THAT FUNCTION//START//
     if(!$this->checkAccess(1, true))
     {
-      return $res -> withStatus(403) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
     }
     //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -38,7 +38,7 @@ class APINotificationCtrl extends Controller
     if ( empty($data['settings']->bad_authentication_email_list) ) $data['settings']->bad_authentication_email_list='';
     if ( empty($data['settings']->bad_authorization_email_list) ) $data['settings']->bad_authorization_email_list='';
     
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
   public function postSettings($req,$res)
 	{
@@ -52,14 +52,14 @@ class APINotificationCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
     //CHECK ACCESS TO THAT FUNCTION//START//
     if( ! $this->checkAccess(1) )
     {
-      return $res -> withStatus(403) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
     }
     //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -79,7 +79,7 @@ class APINotificationCtrl extends Controller
     if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
     if ( isset($allParams['bad_authentication_email_list']) ) $allParams['bad_authentication_email_list'] = implode('; ',$allParams['bad_authentication_email_list']);
@@ -95,7 +95,7 @@ class APINotificationCtrl extends Controller
       }
     }
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
   public function postDatatables($req,$res)
   {
@@ -109,7 +109,7 @@ class APINotificationCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -144,7 +144,7 @@ class APINotificationCtrl extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
   public function postBufferDatatables($req,$res)
   {
@@ -158,7 +158,7 @@ class APINotificationCtrl extends Controller
     #check error#
     if ($_SESSION['error']['status']){
       $data['error']=$_SESSION['error'];
-      return $res -> withStatus(401) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
     }
     //INITIAL CODE////END//
 
@@ -184,6 +184,6 @@ class APINotificationCtrl extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 }

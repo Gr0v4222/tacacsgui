@@ -24,13 +24,13 @@ class TACDevicesCtrl extends Controller
 	// 	#check error#
 	// 	if ($_SESSION['error']['status']){
 	// 		$data['error']=$_SESSION['error'];
-	// 		return $res -> withStatus(401) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 	// 	}
 	// 	//INITIAL CODE////END//
 	// 	//CHECK ACCESS TO THAT FUNCTION//START//
 	// 	if(!$this->checkAccess(2, true))
 	// 	{
-	// 		return $res -> withStatus(403) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 	// 	}
 	// 	//CHECK ACCESS TO THAT FUNCTION//END//
 	//
@@ -41,13 +41,13 @@ class TACDevicesCtrl extends Controller
 	// 	if ($validation->failed()){
 	// 		$data['error']['status']=true;
 	// 		$data['error']['validation']=$validation->error_messages;
-	// 		return $res -> withStatus(200) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// 	}
 	//
 	// 	$data['pingResponses'] = intval(trim(shell_exec('ping '.$req->getParam('ipaddr').' -c4 | grep "64 bytes from" | wc -l')));
 	//
 	//
-	// 	return $res -> withStatus(200) -> write(json_encode($data));
+	// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// }
 ////Device Ping///////////End///////
 ################################################
@@ -100,20 +100,20 @@ class TACDevicesCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(2))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -124,7 +124,7 @@ class TACDevicesCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		if ( ! empty( $allParams['enable'] ) )
@@ -141,7 +141,7 @@ class TACDevicesCtrl extends Controller
 		$logEntry=array('action' => 'add', 'obj_name' => $device['name'], 'obj_id' => $device['id'], 'section' => 'tacacs devices', 'message' => 201);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Add New Device	###############END###########
 ################################################
@@ -159,14 +159,14 @@ class TACDevicesCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(2))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -185,7 +185,7 @@ class TACDevicesCtrl extends Controller
 		$data['device']->user_group = $this->db->table('tac_user_groups')->
 			select(['name as text','id'])->where('id',$data['device']->user_group)->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	#########	POST Edit Device	#########
@@ -201,20 +201,20 @@ class TACDevicesCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(2))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -227,7 +227,7 @@ class TACDevicesCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -251,7 +251,7 @@ class TACDevicesCtrl extends Controller
 		$logEntry=array('action' => 'edit', 'obj_name' => $name['name'], 'obj_id' => $id, 'section' => 'tacacs devices', 'message' => 301);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Edit Device	###############END###########
 ################################################
@@ -268,20 +268,20 @@ class TACDevicesCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(2))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -293,7 +293,7 @@ class TACDevicesCtrl extends Controller
 		$logEntry=array('action' => 'delete', 'obj_name' => $req->getParam('name'), 'obj_id' => $req->getParam('id'), 'section' => 'tacacs devices', 'message' => 401);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Delete Device	###############END###########
 ################################################
@@ -310,13 +310,13 @@ class TACDevicesCtrl extends Controller
 // 	#check error#
 // 	if ($_SESSION['error']['status']){
 // 		$data['error']=$_SESSION['error'];
-// 		return $res -> withStatus(401) -> write(json_encode($data));
+// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 // 	}
 // 	//INITIAL CODE////END//
 // 	//CHECK ACCESS TO THAT FUNCTION//START//
 // 	if(!$this->checkAccess(2))
 // 	{
-// 		return $res -> withStatus(403) -> write(json_encode($data));
+// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 // 	}
 // 	//CHECK ACCESS TO THAT FUNCTION//END//
 // 	//$data['clear'] = shell_exec( TAC_ROOT_PATH . '/main.sh delete temp');
@@ -341,7 +341,7 @@ class TACDevicesCtrl extends Controller
 // 	header("Content-type: application/octet-stream");
 // 	header('Content-Disposition: attachment; filename="'.$filename.'"');
 // 	exit(0);
-// 	//return $res -> withStatus(200) -> write(json_encode($data));
+// 	//$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 // }
 ########	CSV Device	###############END###########
 ########	#########################
@@ -359,7 +359,7 @@ class TACDevicesCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -371,7 +371,7 @@ class TACDevicesCtrl extends Controller
 			$data['data'] = [];
 			$data['recordsTotal'] = 0;
 			$data['recordsFiltered'] = 0;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -425,7 +425,7 @@ class TACDevicesCtrl extends Controller
 			$data['data'] = $tempData->get()->toArray();
 
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 ########	Device Datatables	###############END###########
@@ -444,14 +444,14 @@ class TACDevicesCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(3, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -461,7 +461,7 @@ class TACDevicesCtrl extends Controller
 
 			$data['results'] = TACDevices::select(['id','name AS text'])->whereIn('id', $id)->get();
 			// if (  !count($data['results']) ) $data['results'] = null;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//////////////////////
 		////LIST OF GROUPS////
@@ -476,7 +476,7 @@ class TACDevicesCtrl extends Controller
 
 		$data['results']=$query->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	List Device Group	###############END###########
 ################################################

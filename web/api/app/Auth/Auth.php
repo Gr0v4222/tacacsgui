@@ -148,40 +148,54 @@ class Auth
 
 				if ( $ldap->type == 'openldap' ) {
 					//OpenLDAP//
-					for ($mgui=0; $mgui < count($adUser->gidnumber); $mgui++) {
-						$mainGUI = $search->where('objectclass', 'posixGroup')->where( 'gidNumber', $adUser->gidnumber[$mgui] )->first();
-						$groupList_fullNames[] = ( is_array($mainGUI->dn) ) ? $mainGUI->dn[0] : $mainGUI->dn;
+					if (isset($adUser->gidnumber) && is_array($adUser->gidnumber)) {
+						for ($mgui=0; $mgui < count($adUser->gidnumber); $mgui++) {
+							$mainGUI = $search->where('objectclass', 'posixGroup')->where( 'gidNumber', $adUser->gidnumber[$mgui] )->first();
+							$groupList_fullNames[] = ( is_array($mainGUI->dn) ) ? $mainGUI->dn[0] : $mainGUI->dn;
 
-						$groupList[] = ( is_array($mainGUI->cn) ) ? $mainGUI->cn[0] : $mainGUI->cn;
+							$groupList[] = ( is_array($mainGUI->cn) ) ? $mainGUI->cn[0] : $mainGUI->cn;
+						}
 					}
 					$subGUI = $search->where('objectclass', 'posixGroup')->where( 'memberUid', $uname )->get();
-					for ($sgui=0; $sgui < count($subGUI); $sgui++) {
-						$group_temp_full = ( is_array($subGUI[$sgui]->dn) ) ? $subGUI[$sgui]->dn[0] : $subGUI[$sgui]->dn;
-						$group_temp = ( is_array($subGUI[$sgui]->cn) ) ? $subGUI[$sgui]->cn[0] : $subGUI[$sgui]->cn;
-						if ( !in_array( $group_temp, $groupList ) )  $groupList[] = $group_temp;
-						if ( !in_array( $group_temp_full, $groupList_fullNames ) ) $groupList_fullNames[] = $group_temp_full;
+					if (is_array($subGUI)) {
+						for ($sgui=0; $sgui < count($subGUI); $sgui++) {
+							$group_temp_full = ( is_array($subGUI[$sgui]->dn) ) ? $subGUI[$sgui]->dn[0] : $subGUI[$sgui]->dn;
+							$group_temp = ( is_array($subGUI[$sgui]->cn) ) ? $subGUI[$sgui]->cn[0] : $subGUI[$sgui]->cn;
+							if ( !in_array( $group_temp, $groupList ) )  $groupList[] = $group_temp;
+							if ( !in_array( $group_temp_full, $groupList_fullNames ) ) $groupList_fullNames[] = $group_temp_full;
+						}
 					}
 
-					if ( is_array(@$adUser->memberOf) ) {
-						for ($memOf=0; $memOf < count($adUser->memberof); $memOf++) {
-							// $this->mavis->debugIn( $this->dPrefix() . 'User memberof: ' . $adUser->memberof[$memOf] );
-							// var_dump($adUser->memberof[$memOf]);
-							preg_match_all('/^CN=(.*?),.*/is', $adUser->memberof[$memOf], $groupName);
+					// PHP 8.4 compatibility: Use proper property name and null checks
+					$memberOf = $adUser->memberof ?? $adUser->memberOf ?? null;
+					if ( is_array($memberOf) ) {
+						for ($memOf=0; $memOf < count($memberOf); $memOf++) {
+							// $this->mavis->debugIn( $this->dPrefix() . 'User memberof: ' . $memberOf[$memOf] );
+							// var_dump($memberOf[$memOf]);
+							preg_match_all('/^CN=(.*?),.*/is', $memberOf[$memOf], $groupName);
 							// var_dump($groupName);
-							$groupList[] = $groupName[1][0];
+							if (isset($groupName[1][0])) {
+								$groupList[] = $groupName[1][0];
+							}
 						}
-						$groupList_fullNames = array_merge($groupList_fullNames, $adUser->memberof);
+						$groupList_fullNames = array_merge($groupList_fullNames, $memberOf);
 					}
 
 					//var_dump($groupList); var_dump($groupList_fullNames); die; //gidnumber $search->where( $ldap->filter, $uname )->first()
 				} else {
 					//General LDAP//
-					if ( is_array(@$adUser->memberOf) ) for ($i=0; $i < count($adUser->memberof); $i++) {
-						preg_match_all('/^CN=(.*?),.*/s', $adUser->memberof[$i], $groupName);
-						$groupList[] = $groupName[1][0];
+					// PHP 8.4 compatibility: Use proper property name and null checks
+					$memberOf = $adUser->memberof ?? $adUser->memberOf ?? null;
+					if ( is_array($memberOf) ) {
+						for ($i=0; $i < count($memberOf); $i++) {
+							preg_match_all('/^CN=(.*?),.*/s', $memberOf[$i], $groupName);
+							if (isset($groupName[1][0])) {
+								$groupList[] = $groupName[1][0];
+							}
+						}
 					}
 
-					$groupList_fullNames = $adUser->memberof;
+					$groupList_fullNames = $memberOf ?? [];
 
 				}
 

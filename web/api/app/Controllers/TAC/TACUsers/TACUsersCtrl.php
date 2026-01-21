@@ -102,20 +102,20 @@ class TACUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(4))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		//$enable_flag_test = $req->getParam('enable_flag');
@@ -126,7 +126,7 @@ class TACUsersCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		if ( ! empty( $allParams['enable'] ) )
@@ -194,7 +194,7 @@ class TACUsersCtrl extends Controller
 
 
 			if (!$data['mail'])
-				return $res -> withStatus(200) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 
 			$data['login_date'] = date('Y-m-d H:i:s',time());
 
@@ -221,7 +221,7 @@ class TACUsersCtrl extends Controller
 		$logEntry=array('action' => 'add', 'obj_name' => $user['username'], 'obj_id' => $user['id'], 'section' => 'tacacs users', 'message' => 203);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Add New User	###############END###########
 ################################################
@@ -239,14 +239,14 @@ class TACUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(4))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -273,7 +273,7 @@ class TACUsersCtrl extends Controller
 
 		if ($data['user']['login_flag'] == 3) unset($data['user']['login']);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	#########	POST Edit User	#########
@@ -289,20 +289,20 @@ class TACUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(4))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -313,7 +313,7 @@ class TACUsersCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		if ( ! empty( $allParams['enable'] ) )
@@ -394,7 +394,7 @@ class TACUsersCtrl extends Controller
 
 
 			if (!$data['mail'])
-				return $res -> withStatus(200) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 
 			$data['login_date'] = date('Y-m-d H:i:s',time());
 
@@ -423,7 +423,7 @@ class TACUsersCtrl extends Controller
 		$logEntry=array('action' => 'edit', 'obj_name' => $username['username'], 'obj_id' => $id, 'section' => 'tacacs users', 'message' => 303);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Edit User	###############END###########
 ################################################
@@ -441,11 +441,11 @@ class TACUsersCtrl extends Controller
 	// 	#check error#
 	// 	if ($_SESSION['error']['status']){
 	// 		$data['error']=$_SESSION['error'];
-	// 		return $res -> withStatus(401) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 	// 	}
 	// 	//INITIAL CODE////END//
 	//
-	// 	return $res -> withStatus(200) -> write(json_encode($data));
+	// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// }
 
 	#########	POST Delete User	#########
@@ -461,20 +461,20 @@ class TACUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(4))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -487,7 +487,7 @@ class TACUsersCtrl extends Controller
 		$logEntry=array('action' => 'delete', 'obj_name' => $user->username, 'obj_id' => $req->getParam('id'), 'section' => 'tacacs users', 'message' => 403);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Delete User	###############END###########
 ################################################
@@ -504,13 +504,13 @@ class TACUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(4))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 		$data['clear'] = shell_exec( TAC_ROOT_PATH . '/main.sh delete temp');
@@ -531,7 +531,7 @@ class TACUsersCtrl extends Controller
 
 		$data['filename']=$filename;
 		sleep(3);
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	CSV User	###############END###########
 ################################################
@@ -549,7 +549,7 @@ class TACUsersCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -561,7 +561,7 @@ class TACUsersCtrl extends Controller
 			$data['data'] = [];
 			$data['recordsTotal'] = 0;
 			$data['recordsFiltered'] = 0;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -590,14 +590,14 @@ class TACUsersCtrl extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 ########	User Datatables	###############END###########
 ################################################
 	public function postUserPWChange($req,$res)
 	{
-		if ( ! $this->MAVISLocal->change_passwd_gui() ) return $res -> withStatus(404) -> write('Access Resticted!');
+		if ( ! $this->MAVISLocal->change_passwd_gui() ) $res->getBody()->write('Access Resticted!'); return $res->withStatus(404);
 		//INITIAL CODE////START//
 		$data=array();
 		$data=$this->initialData([
@@ -619,7 +619,7 @@ class TACUsersCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$allParams = $req->getParams();
 		$user = TACUsers::select()->where([['username','=',$allParams['username']]])->
@@ -644,7 +644,7 @@ class TACUsersCtrl extends Controller
 			$_SESSION['error']['status']=true;
 			$_SESSION['error']['message']="Incorrect username or password <br> Do you have rights to change password?";
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$password = '';
 
@@ -675,14 +675,14 @@ class TACUsersCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['success'] = TACUsers::where('id',$user->id)->update([$allParams['object'] => password_hash($allParams['new_password'], PASSWORD_DEFAULT)]);
 
 
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postSendPasswd($req,$res)
@@ -701,13 +701,13 @@ class TACUsersCtrl extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(4))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -721,7 +721,7 @@ class TACUsersCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$allParams = $req->getParams();
 		$id = $allParams['id'];
@@ -732,7 +732,7 @@ class TACUsersCtrl extends Controller
 
 
 		if (!$data['mail'])
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 
 		$data['login_date'] = date('Y-m-d H:i:s',time());
 
@@ -757,7 +757,7 @@ class TACUsersCtrl extends Controller
 
 		$data['changeConfiguration']=$this->changeConfigurationFlag(['unset' => 0]);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	private function passwdSender($data = [], $uid = 0, $password = '', $email = '', $flag = 5){

@@ -27,7 +27,7 @@ class MAVISLDAPCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -35,7 +35,7 @@ class MAVISLDAPCtrl extends Controller
 
 		$data['params']['password'] = '***************';//$this->generateRandomString( strlen($data['LDAP_Params']['password']) );
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	#########	POST LDAP Params	#########
@@ -51,20 +51,20 @@ class MAVISLDAPCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(11))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -80,7 +80,7 @@ class MAVISLDAPCtrl extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -92,7 +92,7 @@ class MAVISLDAPCtrl extends Controller
 		$logEntry=array('action' => 'edit', 'obj_name' => 'MAVIS', 'obj_id' => 'LDAP', 'section' => 'MAVIS LDAP', 'message' => 701);
 		$data['logging']=$this->APILoggingCtrl->makeLogEntry($logEntry);
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	MAVIS LDAP Parameters	###############END###########
 	#########	POST LDAP Search	#########
@@ -108,20 +108,20 @@ class MAVISLDAPCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -134,7 +134,7 @@ class MAVISLDAPCtrl extends Controller
 
 		if ( ! $ldap->enabled ){
 			$data['results'][0]['text'] = '<p class="text-danger">LDAP Disabled!</p>';
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$username = ( strpos($ldap->user, '@') !== false ) ? $ldap->user : $ldap->user . '@'.( str_replace( ',', '.', preg_replace('/DC=/i', '', $ldap->base) ) );
@@ -168,7 +168,7 @@ class MAVISLDAPCtrl extends Controller
 		} catch (\Adldap\Auth\BindException $e) {
 				$data['database']['errors'][] = $e->getMessage();
 				//var_dump($e); die;
-				return $res -> withStatus(200) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$adSearch = $provider->search();
@@ -225,7 +225,7 @@ class MAVISLDAPCtrl extends Controller
 
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	MAVIS LDAP Search	###############END###########
 ################################################
@@ -242,14 +242,14 @@ class MAVISLDAPCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -265,7 +265,7 @@ class MAVISLDAPCtrl extends Controller
 			$this->db->table('ldap_groups')->where('dn', $req->getParam('dn'))->delete();
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	MAVIS LDAP Bind	###############END###########
 ########	MAVIS LDAP Bind	###############START###########
@@ -281,14 +281,14 @@ class MAVISLDAPCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -307,7 +307,7 @@ class MAVISLDAPCtrl extends Controller
 
 		$data['data']=$query->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function getBindRef($req,$res)
@@ -322,13 +322,13 @@ class MAVISLDAPCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -348,7 +348,7 @@ class MAVISLDAPCtrl extends Controller
 		select(['aug.name as text', 'aug.id as id'])->
 		where('lb.ldap_id',$req->getParam('id'))->whereNull('tac_grp_id')->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postBindDel($req,$res)
@@ -363,19 +363,19 @@ class MAVISLDAPCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
 		$data['result'] = $this->db::table('ldap_groups')->where('id', $req->getParam('id'))->delete();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	MAVIS LDAP Bind	###############END###########
 ########	MAVIS LDAP Check	###############START###########
@@ -391,14 +391,14 @@ class MAVISLDAPCtrl extends Controller
 	// 	#check error#
 	// 	if ($_SESSION['error']['status']){
 	// 		$data['error']=$_SESSION['error'];
-	// 		return $res -> withStatus(401) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 	// 	}
 	// 	//INITIAL CODE////END//
 	//
 	// 	//CHECK ACCESS TO THAT FUNCTION//START//
 	// 	if(!$this->checkAccess(11, true))
 	// 	{
-	// 		return $res -> withStatus(403) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 	// 	}
 	// 	//CHECK ACCESS TO THAT FUNCTION//END//
 	//
@@ -410,14 +410,14 @@ class MAVISLDAPCtrl extends Controller
 	// 	if ($validation->failed()){
 	// 		$data['error']['status']=true;
 	// 		$data['error']['validation']=$validation->error_messages;
-	// 		return $res -> withStatus(200) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// 	}
 	//
 	// 	$data['test_configuration'] = $this->TACConfigCtrl->testConfiguration($this->TACConfigCtrl->createConfiguration("\n "));
 	//
 	// 	$data['check_result']=preg_replace('/PASSWORD\s+.*/i', "PASSWORD\t\t******", shell_exec(TAC_ROOT_PATH . '/main.sh check mavis '.escapeshellarg( $req->getParam('test_username') ).' '.escapeshellarg($req->getParam('test_password')).' 2>&1') );
 	//
-	// 	return $res -> withStatus(200) -> write(json_encode($data));
+	// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// }
 ########	MAVIS LDAP Check	###############END###########
 ########	MAVIS LDAP List	###############START###########
@@ -433,14 +433,14 @@ class MAVISLDAPCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -450,7 +450,7 @@ class MAVISLDAPCtrl extends Controller
 
 			$data['results'] = $this->db->table('ldap_groups')->select(['id','cn AS text'])->whereIn('id', $id)->get();
 			// if (  !count($data['results']) ) $data['results'] = null;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//////////////////////
 		////LIST OF GROUPS////
@@ -465,7 +465,7 @@ class MAVISLDAPCtrl extends Controller
 
 		$data['results']=$query->orderBy('dn','asc')->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	MAVIS LDAP List	###############END###########
 ########	LDAP Test	###############START###########
@@ -481,14 +481,14 @@ class MAVISLDAPCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(11, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -530,10 +530,10 @@ class MAVISLDAPCtrl extends Controller
 				$data['test'] = 1;
 				$data['exception'] = $e->getMessage();
 				//var_dump($e); die;
-				return $res -> withStatus(200) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	LDAP Test	###############END###########
 }//END OF CLASS//

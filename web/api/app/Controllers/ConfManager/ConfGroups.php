@@ -23,7 +23,7 @@ class ConfGroups extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -31,13 +31,13 @@ class ConfGroups extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -48,7 +48,7 @@ class ConfGroups extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$status = CMDRun::init()->
@@ -59,12 +59,12 @@ class ConfGroups extends Controller
 		if ( !$status ){
 				$data['error']['status']=true;
 				$data['error']['validation']=['name' => ['That name already used']];
-				return $res -> withStatus(200) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 			}
 
 		$data['group'] = 1;
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function getEdit($req,$res)
@@ -79,7 +79,7 @@ class ConfGroups extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -87,13 +87,13 @@ class ConfGroups extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -102,7 +102,7 @@ class ConfGroups extends Controller
 			'name_old' => $req->getParam('id'), 
 			'id' => $req->getParam('id')];
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ////////////////////////////////////////////////////////////
 	public function postEdit($req,$res)
@@ -117,7 +117,7 @@ class ConfGroups extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -125,13 +125,13 @@ class ConfGroups extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -143,7 +143,7 @@ class ConfGroups extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$status = CMDRun::init()->
@@ -154,7 +154,7 @@ class ConfGroups extends Controller
 		if ( $status != 1 ){
 			$data['error']['status']=true;
 			$data['error']['validation']= ($status == 2) ? ['name' => ['That name already used']] : ['name' => ['Unkown error']] ;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		ConfManagerHelper::forceCommit();
@@ -162,7 +162,7 @@ class ConfGroups extends Controller
 		$data['save'] = 1;
 
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	///////////////////////////////////////////////////////////
 	public function postDel($req,$res)
@@ -177,7 +177,7 @@ class ConfGroups extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -185,13 +185,13 @@ class ConfGroups extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -202,7 +202,7 @@ class ConfGroups extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['result'] = CMDRun::init()->
@@ -210,7 +210,7 @@ class ConfGroups extends Controller
 			setAttr('--deldir='.$req->getParam('name'))->
 			get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
   public function postDatatables($req,$res)
@@ -225,7 +225,7 @@ class ConfGroups extends Controller
     #check error#
     if ($_SESSION['error']['status']){
       $data['error']=$_SESSION['error'];
-      return $res -> withStatus(401) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
     }
     //INITIAL CODE////END//
 
@@ -237,7 +237,7 @@ class ConfGroups extends Controller
       $data['data'] = [];
       $data['recordsTotal'] = 0;
       $data['recordsFiltered'] = 0;
-      return $res -> withStatus(200) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
     }
     //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -291,7 +291,7 @@ class ConfGroups extends Controller
     //Some additional parameters for Datatables
     $data['draw']=intval( $params['draw'] );
 
-  	return $res -> withStatus(200) -> write(json_encode($data));
+  	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
 	public function getList($req,$res)
@@ -306,14 +306,14 @@ class ConfGroups extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -330,7 +330,7 @@ class ConfGroups extends Controller
 				];
 			}
 			// if (  !count($data['results']) ) $data['results'] = null;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//////////////////////
 		////LIST OF GROUPS////
@@ -369,7 +369,7 @@ class ConfGroups extends Controller
 			];
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		//////////////////////
 		////LIST OF GROUPS////
 		// $data['incomplete_results'] = false;
@@ -399,7 +399,7 @@ class ConfGroups extends Controller
 		// 	array_push($data['results'],$model);
 		// }
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 }//END OF CLASS//

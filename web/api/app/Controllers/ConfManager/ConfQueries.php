@@ -29,7 +29,7 @@ class ConfQueries extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -37,13 +37,13 @@ class ConfQueries extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -56,7 +56,7 @@ class ConfQueries extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -80,7 +80,7 @@ class ConfQueries extends Controller
 
 		$data['query'] = 1;
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function getEdit($req,$res)
@@ -95,7 +95,7 @@ class ConfQueries extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -103,13 +103,13 @@ class ConfQueries extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -120,7 +120,7 @@ class ConfQueries extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		//$data['test333'] = $this->ConfManager->createConfig();
 
@@ -141,7 +141,7 @@ class ConfQueries extends Controller
 		leftJoin('confM_devices as cd', 'cd.id', '=', 'device_id')->
 		select(["device_id as id", 'cd.name as text'])->where('query_id', $req->getParam('id'))->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ////////////////////////////////////////////////////////////
 	public function postEdit($req,$res)
@@ -156,7 +156,7 @@ class ConfQueries extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -164,13 +164,13 @@ class ConfQueries extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -183,7 +183,7 @@ class ConfQueries extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$allParams = $req->getParams();
@@ -234,7 +234,7 @@ class ConfQueries extends Controller
 
 		$data['save'] = 1;
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	///////////////////////////////////////////////////////////
 	public function postDel($req,$res)
@@ -249,7 +249,7 @@ class ConfQueries extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -257,13 +257,13 @@ class ConfQueries extends Controller
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -275,14 +275,14 @@ class ConfQueries extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$data['result'] = Conf_Queries::where( 'id', $req->getParam('id') )->delete();
 
 		$this->ConfManager->createConfig();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
   public function postDatatables($req,$res)
@@ -297,7 +297,7 @@ class ConfQueries extends Controller
     #check error#
     if ($_SESSION['error']['status']){
       $data['error']=$_SESSION['error'];
-      return $res -> withStatus(401) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
     }
     //INITIAL CODE////END//
 
@@ -309,7 +309,7 @@ class ConfQueries extends Controller
       $data['data'] = [];
       $data['recordsTotal'] = 0;
       $data['recordsFiltered'] = 0;
-      return $res -> withStatus(200) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
     }
     //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -348,7 +348,7 @@ class ConfQueries extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
     // $data['columns'] = $columns;
     // $queries = [];
     // $data['filter'] = [];
@@ -432,7 +432,7 @@ class ConfQueries extends Controller
   	// 	//Some additional parameters for Datatables
   	// 	$data['draw']=intval( $params['draw'] );
 		//
-  	// 	return $res -> withStatus(200) -> write(json_encode($data));
+  	// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
 	public function postPreview($req,$res)
@@ -447,14 +447,14 @@ class ConfQueries extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -470,7 +470,7 @@ class ConfQueries extends Controller
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
 			$data['error']['validation']['cm'] = !$testCm;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$creden = ( $req->getParam('credential') ) ? $req->getParam('credential') : 0;
 		$model = Conf_Models::select()->where('id', $req->getParam('model'))->first();
@@ -496,7 +496,7 @@ class ConfQueries extends Controller
 		if ( !$model OR !$device OR !$expectations) {
 			$data['error']['status']=true;
 			$data['error']['validation']['other'] = true;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		$prompt_m = array_filter( array_map('trim', explode(',', $model->prompt) ), function($value) { return $value !== ''; } );
@@ -534,7 +534,7 @@ class ConfQueries extends Controller
     }
 		#$data['test123123'] = shell_exec("/opt/tacacsgui/main.sh  'run' 'cmd' '/opt/tacacsgui/plugins/ConfigManager/cm.py' '-tq' '/opt/tacacsgui/temp/router_12.yaml' -d");
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 }//END OF CLASS//
