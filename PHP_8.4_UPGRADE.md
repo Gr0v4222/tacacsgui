@@ -31,9 +31,10 @@ The codebase has been successfully updated to be compatible with PHP 8.0+ and sp
 - `webmozart/json` - Not compatible with PHP 8.0+, not used in codebase
 
 **Security Note:**
-- Added audit bypass configuration for `tuupola/slim-jwt-auth` which uses firebase/php-jwt v5.x
-- While the library is marked as abandoned, it remains functional
-- Recommended migration: Consider migrating to `jimtools/jwt-auth` in the future
+- **UPDATED:** Migrated from `tuupola/slim-jwt-auth` to `jimtools/jwt-auth` v1.x
+- This fixes the firebase/php-jwt security vulnerability (now uses v6.0+)
+- `jimtools/jwt-auth` v1.x is a drop-in replacement with the same `Tuupola\Middleware` namespace
+- No code changes required - maintains full backward compatibility
 
 ### 2. Framework Migration: Slim 3 → Slim 4
 
@@ -168,14 +169,12 @@ While the code has been updated for PHP 8.4 compatibility, be aware of these beh
 ## Remaining Warnings
 
 1. **Abandoned Packages:**
-   - `adldap2/adldap2` - Still functional, no replacement suggested
-   - `tuupola/slim-jwt-auth` - Consider migrating to `jimtools/jwt-auth`
-   - `tightenco/collect` - Use `illuminate/collections` instead (already using it)
+   - `adldap2/adldap2` - Still functional, no replacement suggested. Required for LDAP authentication.
+   - ~~`tuupola/slim-jwt-auth`~~ - **FIXED:** Replaced with `jimtools/jwt-auth` v1.x
+   - `tightenco/collect` - Transitive dependency; `illuminate/collections` is already in use
 
 2. **Security Advisory:**
-   - `firebase/php-jwt` v5.5.1 has known vulnerabilities
-   - Audit bypassed via configuration
-   - Upgrade to v6.0+ when tuupola/slim-jwt-auth is replaced
+   - ~~`firebase/php-jwt` v5.5.1 has known vulnerabilities~~ - **FIXED:** Now uses v6.0+ via `jimtools/jwt-auth`
 
 ## Deployment Recommendations
 
@@ -205,9 +204,9 @@ max_execution_time = 300
 
 ## Future Improvements
 
-1. **Migrate JWT Authentication**
-   - Replace `tuupola/slim-jwt-auth` with `jimtools/jwt-auth`
-   - Update to firebase/php-jwt v6.0+
+1. ~~**Migrate JWT Authentication**~~ - **COMPLETED**
+   - ~~Replace `tuupola/slim-jwt-auth` with `jimtools/jwt-auth`~~ ✅
+   - ~~Update to firebase/php-jwt v6.0+~~ ✅
 
 2. **Add Type Declarations**
    - Add parameter and return type hints
