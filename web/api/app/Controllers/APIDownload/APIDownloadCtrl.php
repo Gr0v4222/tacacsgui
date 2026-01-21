@@ -19,7 +19,7 @@ class APIDownloadCtrl extends Controller
   	#check error#
   	if ($_SESSION['error']['status']){
   		$data['error']=$_SESSION['error'];
-  		return $res -> withStatus(401) -> write(json_encode($data));
+  		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   	}
   	//INITIAL CODE////END//
     $data['clear'] = shell_exec( TAC_ROOT_PATH . '/main.sh delete temp');
@@ -55,14 +55,14 @@ class APIDownloadCtrl extends Controller
     #check error#
     if ($_SESSION['error']['status']){
       $data['error']=$_SESSION['error'];
-      return $res -> withStatus(401) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
     }
     //INITIAL CODE////END//
 
     //CHECK ACCESS TO THAT FUNCTION//START//
     if(!$this->checkAccess(1))
     {
-      return $res -> withStatus(403) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
     }
     //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -98,14 +98,14 @@ class APIDownloadCtrl extends Controller
     #check error#
     if ($_SESSION['error']['status']){
       $data['error']=$_SESSION['error'];
-      return $res -> withStatus(401) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
     }
     //INITIAL CODE////END//
 
     //CHECK ACCESS TO THAT FUNCTION//START//
     if(!$this->checkAccess(1))
     {
-      return $res -> withStatus(403) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
     }
     //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -142,14 +142,14 @@ class APIDownloadCtrl extends Controller
     #check error#
     if ($_SESSION['error']['status']){
       $data['error']=$_SESSION['error'];
-      return $res -> withStatus(401) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
     }
     //INITIAL CODE////END//
 
     //CHECK ACCESS TO THAT FUNCTION//START//
     if(!$this->checkAccess(1))
     {
-      return $res -> withStatus(403) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
     }
     //CHECK ACCESS TO THAT FUNCTION//END//
 

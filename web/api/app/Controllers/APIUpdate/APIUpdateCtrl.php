@@ -25,7 +25,7 @@ class APIUpdateCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -38,7 +38,7 @@ class APIUpdateCtrl extends Controller
 			$data['slaves'] = $this->HAMaster->getSlaves();
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	#########	GET Global Info	#########
@@ -54,7 +54,7 @@ class APIUpdateCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		$allParams = $req->getParams();
@@ -78,10 +78,10 @@ class APIUpdateCtrl extends Controller
     $master_response = HA::sendRequest($session_params);
 		$data['code'] = $master_response[1];
 		$data['slave_ip'] = $allParams['ipaddr'];
-		if ($master_response[1] !== 200) return $res -> withStatus(200) -> write(json_encode($data));
+		if ($master_response[1] !== 200) $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		HA::slaveTimeUpdate($allParams['ipaddr']);
 		$data['gclient'] = json_decode($master_response[0], true );
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	public function postUpgradeSlave($req,$res)
@@ -96,7 +96,7 @@ class APIUpdateCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		$allParams = $req->getParams();
@@ -121,10 +121,10 @@ class APIUpdateCtrl extends Controller
 		$data['gclient_status'] = $master_response[1];
 		$data['gclient_params'] = $session_params;
 
-		if ($master_response[1] !== 200) return $res -> withStatus(200) -> write(json_encode($data));
+		if ($master_response[1] !== 200) $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		HA::slaveTimeUpdate($allParams['ipaddr']);
 		$data['gclient'] = json_decode($master_response[0], true );
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	// public function postInfo($req,$res)
 	// {
@@ -138,11 +138,11 @@ class APIUpdateCtrl extends Controller
 	// 	#check error#
 	// 	if ($_SESSION['error']['status']){
 	// 		$data['error']=$_SESSION['error'];
-	// 		return $res -> withStatus(401) -> write(json_encode($data));
+	// 		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 	// 	}
 	// 	//INITIAL CODE////END//
 	//
-	// 	return $res -> withStatus(200) -> write(json_encode($data));
+	// 	$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	// }
 	#########	POST Change local Info	#########
 	public function postChange($req,$res)
@@ -157,20 +157,20 @@ class APIUpdateCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(10))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -190,7 +190,7 @@ class APIUpdateCtrl extends Controller
  				break;
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	#########	POST Check Update	#########
 	public function postCheck($req,$res)
@@ -205,14 +205,14 @@ class APIUpdateCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		$update = APISettings::select('update_url')->first();
@@ -252,7 +252,7 @@ class APIUpdateCtrl extends Controller
 				break;
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	public static function sendRequest($params=[])
 	{
@@ -277,33 +277,33 @@ class APIUpdateCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK SHOULD I STOP THIS?//START//
 		if( $this->shouldIStopThis() )
 		{
 			$data['error'] = $this->shouldIStopThis();
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK SHOULD I STOP THIS?//END//
 		//CHECK Registration//START//
 		if( ! $this->activated() )
 		{
 			$data['error'] = [ 'message' => 'Unregistered Server!'];
-			return $res -> withStatus(400) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 		}
 		//CHECK Registration//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(10))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
 		$data['upgrade'] = self::gitPull();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	public static function gitPull()
 	{

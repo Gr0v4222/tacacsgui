@@ -17,7 +17,7 @@ class APIDevCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
     $path='/opt/tgui_data/dev/inc/js/';
@@ -29,6 +29,6 @@ class APIDevCtrl extends Controller
     foreach ($data['files1'] as $file) {
       $output.=file_get_contents($path.$file);
     }
-    return $res -> withHeader('Content-type', 'application/javascript') -> withStatus(200) -> write($output);
+    $res->getBody()->write($output); return $res->withStatus(200)->withHeader('Content-type', 'application/javascript');
   }
 }

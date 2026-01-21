@@ -26,19 +26,19 @@ class APISettingsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1, true))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
     $data['policy'] = APIPWPolicy::select()->find(1);
 
-    return $res -> withStatus(200) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
   public function postPasswdPolicy($req,$res)
@@ -53,20 +53,20 @@ class APISettingsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
     //CHECK SHOULD I STOP THIS?//START//
     if( $this->shouldIStopThis() )
     {
       $data['error'] = $this->shouldIStopThis();
-      return $res -> withStatus(400) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(400);
     }
     //CHECK SHOULD I STOP THIS?//END//
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -86,7 +86,7 @@ class APISettingsCtrl extends Controller
     if ($validation->failed()){
       $data['error']['status']=true;
       $data['error']['validation']=$validation->error_messages;
-      return $res -> withStatus(200) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
     }
 
     $allParams = $req->getParams();
@@ -95,7 +95,7 @@ class APISettingsCtrl extends Controller
 
     $data['result'] = APIPWPolicy::where('id', 1)->update($allParams);
 
-    return $res -> withStatus(200) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 ####PASSWORD POLICY#####End
 ####SMTP SETTINGS######
@@ -111,13 +111,13 @@ public function getSmtp($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1, true))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -125,7 +125,7 @@ public function getSmtp($req,$res)
 
   $data['smtp']['smtp_password'] = $this->generateRandomString( strlen($data['smtp']['smtp_password']) );
 
-  return $res -> withStatus(200) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 
 public function postSmtp($req,$res)
@@ -140,20 +140,20 @@ public function postSmtp($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
   //CHECK SHOULD I STOP THIS?//START//
   if( $this->shouldIStopThis() )
   {
     $data['error'] = $this->shouldIStopThis();
-    return $res -> withStatus(400) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(400);
   }
   //CHECK SHOULD I STOP THIS?//END//
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -165,7 +165,7 @@ public function postSmtp($req,$res)
   if ($validation->failed()){
     $data['error']['status']=true;
     $data['error']['validation']=$validation->error_messages;
-    return $res -> withStatus(200) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
   $allParams = $req->getParams();
@@ -174,7 +174,7 @@ public function postSmtp($req,$res)
 
   $data['result'] = APISMTP::where('id', 1)->update($allParams);
 
-  return $res -> withStatus(200) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 
 public function postSmtpTest($req,$res)
@@ -189,13 +189,13 @@ public function postSmtpTest($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -206,7 +206,7 @@ public function postSmtpTest($req,$res)
   if ($validation->failed()){
     $data['error']['status']=true;
     $data['error']['validation']=$validation->error_messages;
-    return $res -> withStatus(200) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
   $allParams = $req->getParams();
@@ -216,7 +216,7 @@ public function postSmtpTest($req,$res)
   $email->setTemplate();
   $data['result'] = $email->send();
 
-  return $res -> withStatus(200) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 ####SMTP SETTINGS######End
 ############
@@ -240,13 +240,13 @@ public function getTimeTimezones($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1, true))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
   $byId = $req->getParam('byId');
@@ -259,7 +259,7 @@ public function getTimeTimezones($req,$res)
     $tempTimezone = preg_split('/\s+/', trim( $tempData ) );
     $data['item'] = [ 'id' => $tempTimezone[0], 'text' =>$tempTimezone[1] ];
 
-    return $res -> withStatus(200) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
   $search = preg_replace('/[^a-zA-Z0-9]/', '', $req->getParam('search'));
@@ -283,7 +283,7 @@ public function getTimeTimezones($req,$res)
     array_push($data['results'],$timezone);
   }
 
-  return $res -> withStatus(200) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 
 public function getTimeSettings($req,$res)
@@ -298,21 +298,21 @@ public function getTimeSettings($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
 
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1, true))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
   $data['time'] = APISettings::select(['timezone', 'ntp_list'])->find(1);
   $timezone = preg_split('/\s+/', self::getTimeTimezoneName(['id' => $data['time']->timezone]) );
   $data['time']->timezone = [[ 'id' => $timezone[0], 'text' =>$timezone[1] ]];
 
-  return $res -> withStatus(200) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 public static function applyTimeSettings( $allParams = [] )
 {
@@ -365,20 +365,20 @@ public function postTimeSettings($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
   //CHECK SHOULD I STOP THIS?//START//
   if( $this->shouldIStopThis() )
   {
     $data['error'] = $this->shouldIStopThis();
-    return $res -> withStatus(400) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(400);
   }
   //CHECK SHOULD I STOP THIS?//END//
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
   $validation = $this->validator->validate($req, [
@@ -388,7 +388,7 @@ public function postTimeSettings($req,$res)
   if ($validation->failed()){
     $data['error']['status']=true;
     $data['error']['validation']=$validation->error_messages;
-    return $res -> withStatus(200) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
   $allParams = $req->getParams();
@@ -397,10 +397,10 @@ public function postTimeSettings($req,$res)
     $data['result_ntp'] = trim( shell_exec( 'sudo '. TAC_ROOT_PATH . "/main.sh ntp get-config ") );
     $data['result'] = APISettings::where('id', 1)->update($allParams);
     sleep(1);
-    return $res -> withStatus(200) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
-  return $res -> withStatus(400) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(400);
 }
 
 public function getTimeStatus($req,$res)
@@ -415,13 +415,13 @@ public function getTimeStatus($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1, true))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
   $output = "command timedatectl :\n";
@@ -432,7 +432,7 @@ public function getTimeStatus($req,$res)
 
   $data['output'] = $output;
 
-  return $res -> withStatus(200) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 ####TIME SETTINGS######End
 #########################
@@ -449,13 +449,13 @@ public function getInterfaceSettings($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1, true))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -468,7 +468,7 @@ public function getInterfaceSettings($req,$res)
   $inter = (empty($allParams['interface'])) ? $data['list'][0] : $allParams['interface'];
 
   // if ( empty($allParams['interface']) ){
-  //   return $res -> withStatus(400) -> write(json_encode($data));
+  //   $res->getBody()->write(json_encode($data)); return $res->withStatus(400);
   // }
 
   $cmd = CMDRun::init()->setCmd(TAC_ROOT_PATH . '/interfaces.py')->setAttr(['-i',$inter,'--netplan']);
@@ -517,7 +517,7 @@ public function getInterfaceSettings($req,$res)
     }
   }
 
-  return $res -> withStatus(200) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 
 public function postInterfaceSettings($req,$res)
@@ -532,20 +532,20 @@ public function postInterfaceSettings($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
   //CHECK SHOULD I STOP THIS?//START//
   if( $this->shouldIStopThis() )
   {
     $data['error'] = $this->shouldIStopThis();
-    return $res -> withStatus(400) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(400);
   }
   //CHECK SHOULD I STOP THIS?//END//
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -567,7 +567,7 @@ public function postInterfaceSettings($req,$res)
   if ($validation->failed()){
     $data['error']['status']=true;
     $data['error']['validation']=$validation->error_messages;
-    return $res -> withStatus(200) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
   $allParams = $req->getParams();
@@ -613,7 +613,7 @@ public function postInterfaceSettings($req,$res)
 
   //$data['result'] = trim( shell_exec('sudo ' . TAC_ROOT_PATH . '/main.sh network save '. $interface) );
 
-  return $res -> withStatus(200) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 
 public function getInterfaceList($req,$res)
@@ -628,13 +628,13 @@ public function getInterfaceList($req,$res)
   #check error#
   if ($_SESSION['error']['status']){
     $data['error']=$_SESSION['error'];
-    return $res -> withStatus(401) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   }
   //INITIAL CODE////END//
   //CHECK ACCESS TO THAT FUNCTION//START//
   if(!$this->checkAccess(1, true))
   {
-    return $res -> withStatus(403) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
   }
   //CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -647,7 +647,7 @@ public function getInterfaceList($req,$res)
   $key = array_search('lo', $data['list']);
   if (!$key) unset($data['list'][$key]);
   $data['list'] = array_values($data['list']);
-  return $res -> withStatus(200) -> write(json_encode($data));
+  $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 }
 ####NETWORK SETTINGS######End
 #########################
@@ -664,13 +664,13 @@ public function getInterfaceList($req,$res)
 //   #check error#
 //   if ($_SESSION['error']['status']){
 //     $data['error']=$_SESSION['error'];
-//     return $res -> withStatus(401) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 //   }
 //   //INITIAL CODE////END//
 //   //CHECK ACCESS TO THAT FUNCTION//START//
 //   if(!$this->checkAccess(1, true))
 //   {
-//     return $res -> withStatus(403) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 //   }
 //   //CHECK ACCESS TO THAT FUNCTION//END//
 //
@@ -680,7 +680,7 @@ public function getInterfaceList($req,$res)
 //
 //   $data['test'] = HA::getServerRole();
 //
-//   return $res -> withStatus(200) -> write(json_encode($data));
+//   $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 // }
 // public function postHASettings($req,$res)
 // {
@@ -694,13 +694,13 @@ public function getInterfaceList($req,$res)
 //   #check error#
 //   if ($_SESSION['error']['status']){
 //     $data['error']=$_SESSION['error'];
-//     return $res -> withStatus(401) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 //   }
 //   //INITIAL CODE////END//
 //   //CHECK ACCESS TO THAT FUNCTION//START//
 //   if( !$this->checkAccess(1) )
 //   {
-//     return $res -> withStatus(403) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 //   }
 //   //CHECK ACCESS TO THAT FUNCTION//END//
 //
@@ -715,7 +715,7 @@ public function getInterfaceList($req,$res)
 //   if ($validation->failed()){
 //     $data['error']['status']=true;
 //     $data['error']['validation']=$validation->error_messages;
-//     return $res -> withStatus(200) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 //   }
 //
 //   $allParams = $req->getParams();
@@ -726,12 +726,12 @@ public function getInterfaceList($req,$res)
 //   $ha = new HA();
 //   if (!$this->activated()){
 //     $data['response_e'] = 'Not activated version!';
-//     return $res -> withStatus(200) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 //   }
 //   if (!$ha->getRootpw($allParams['rootpw'])){
 //     $data['rootpw'] = true;
 //     $data['response_e'] = 'MySQL root password required!';
-//     return $res -> withStatus(200) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 //   }
 //   //$data['test2'] = $ha->getRootpw();
 //   //
@@ -739,7 +739,7 @@ public function getInterfaceList($req,$res)
 //   //
 //   $data['response'] = $ha->save( $allParams );
 //
-//   return $res -> withStatus(200) -> write(json_encode($data));
+//   $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 // }
 // public function postHAStatus($req,$res)
 // {
@@ -753,17 +753,17 @@ public function getInterfaceList($req,$res)
 //   #check error#
 //   if ($_SESSION['error']['status']){
 //     $data['error']=$_SESSION['error'];
-//     return $res -> withStatus(401) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 //   }
 //   //INITIAL CODE////END//
 //   //CHECK ACCESS TO THAT FUNCTION//START//
 //   if(!$this->checkAccess(1, true))
 //   {
-//     return $res -> withStatus(403) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 //   }
 //   //CHECK ACCESS TO THAT FUNCTION//END//
 //   $data['status'] = HA::getStatus();
-//   return $res -> withStatus(200) -> write(json_encode($data));
+//   $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 // }
 
 // public function postHASlaveDel($req,$res)
@@ -778,13 +778,13 @@ public function getInterfaceList($req,$res)
 //   #check error#
 //   if ($_SESSION['error']['status']){
 //     $data['error']=$_SESSION['error'];
-//     return $res -> withStatus(401) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 //   }
 //   //INITIAL CODE////END//
 //   //CHECK ACCESS TO THAT FUNCTION//START//
 //   if(!$this->checkAccess(1, true))
 //   {
-//     return $res -> withStatus(403) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 //   }
 //   //CHECK ACCESS TO THAT FUNCTION//END//
 //   $validation = $this->validator->validate($req, [
@@ -795,10 +795,10 @@ public function getInterfaceList($req,$res)
 //     $data['error']['status']=true;
 //     $data['status'] = false;
 //     $data['error']['validation']=$validation->error_messages;
-//     return $res -> withStatus(200) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 //   }
 //   $data['status'] = HA::delSlave($req->getParam('sid'));
-//   return $res -> withStatus(200) -> write(json_encode($data));
+//   $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 // }
 
 // public function postHASlaveList($req,$res)
@@ -813,13 +813,13 @@ public function getInterfaceList($req,$res)
 //   #check error#
 //   if ($_SESSION['error']['status']){
 //     $data['error']=$_SESSION['error'];
-//     return $res -> withStatus(401) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 //   }
 //   //INITIAL CODE////END//
 //   //CHECK ACCESS TO THAT FUNCTION//START//
 //   if(!$this->checkAccess(1, true))
 //   {
-//     return $res -> withStatus(403) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 //   }
 //   //CHECK ACCESS TO THAT FUNCTION//END//
 //   $validation = $this->validator->validate($req, [
@@ -830,10 +830,10 @@ public function getInterfaceList($req,$res)
 //     $data['error']['status']=true;
 //     $data['status'] = false;
 //     $data['error']['validation']=$validation->error_messages;
-//     return $res -> withStatus(200) -> write(json_encode($data));
+//     $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 //   }
 //   $data['status'] = HA::updateSlave( implode(',', $req->getParam('slaves_ip')) );
-//   return $res -> withStatus(200) -> write(json_encode($data));
+//   $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 // }
 ####High Availability SETTINGS######End
 }

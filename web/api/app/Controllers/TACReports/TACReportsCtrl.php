@@ -30,7 +30,7 @@ class TACReportsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -69,7 +69,7 @@ class TACReportsCtrl extends Controller
 				)[1];
 			$data['widgets'][0]->ha = $this->getHaRole();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	##########STATISTICS PLEASE#######END##
 	################################################
@@ -85,7 +85,7 @@ class TACReportsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		$data['time_range'] = [];
 
@@ -141,7 +141,7 @@ class TACReportsCtrl extends Controller
 		$data['autho']['step'] = ( $data['autho']['step'] < 50 ) ? 10 : round($data['autho']['step'] / 5);
 
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	public static function chartStep($max=1, $step=1)
 	{
@@ -160,7 +160,7 @@ class TACReportsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		$weekTimeRange=array(
@@ -194,7 +194,7 @@ class TACReportsCtrl extends Controller
 							"left join `tgui`.`tac_devices` as `dev` on `addr`.`id` = `dev`.`address` order by log.count desc;") );
 		}
 		//////////Top Devices///end//
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	public function getDaemonStatus($req,$res)
 	{
@@ -208,7 +208,7 @@ class TACReportsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		$data['tacacsStatusCommand'] = 'sudo '.TAC_DEAMON.' status';
@@ -223,7 +223,7 @@ class TACReportsCtrl extends Controller
 		{
 			$data['tacacsStatus']=1;
 		}
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	################################################
 	################################################
@@ -241,7 +241,7 @@ class TACReportsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -348,7 +348,7 @@ class TACReportsCtrl extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 ########	Accounting Datatables	###############END###########
@@ -368,7 +368,7 @@ class TACReportsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -468,7 +468,7 @@ class TACReportsCtrl extends Controller
 
 		$data['data'] = $tempData->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 ########	Authentication Datatables	###############END###########
@@ -488,7 +488,7 @@ class TACReportsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -595,7 +595,7 @@ class TACReportsCtrl extends Controller
 
 		$data['data'] = $tempData->get()->toArray();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 ########	Authorization Datatables	###############END###########
@@ -614,7 +614,7 @@ class TACReportsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		$allParams = $req->getParams();
@@ -664,14 +664,14 @@ class TACReportsCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		//CHECK ACCESS TO THAT FUNCTION//START//
 		if(!$this->checkAccess(1))
 		{
-			return $res -> withStatus(403) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(403);
 		}
 		//CHECK ACCESS TO THAT FUNCTION//END//
 
@@ -689,7 +689,7 @@ class TACReportsCtrl extends Controller
 			$data['test23'] = $period;
 			$data['test232'] = $allParams['target'];
 			$data['error']['status']=true;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 		$data['period'] = $period;
 		switch ($allParams['target']) {
@@ -707,11 +707,11 @@ class TACReportsCtrl extends Controller
 
 			default:
 				$data['error']=true;
-				return $res -> withStatus(200) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 				break;
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	########	Delete Log ###############END###########
 }

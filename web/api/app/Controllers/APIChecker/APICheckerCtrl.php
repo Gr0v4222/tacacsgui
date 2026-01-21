@@ -237,7 +237,7 @@ class APICheckerCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 		//Sel self-check script//
@@ -271,7 +271,7 @@ class APICheckerCtrl extends Controller
 						$this->setDefaultValues($database, $tableName);
 						///////////////////////////////////
 						//$this->databaseFix();
-						sleep(1); return $res -> withStatus(200) -> write(json_encode($data));
+						sleep(1); $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 					}
 				}
 				//IF TABLE ALREADY EXIST CHECK COLUMNS//
@@ -296,7 +296,7 @@ class APICheckerCtrl extends Controller
 								if ($databaseFix['status']){
 									$data["messages"][0]=$databaseFix['message'];
 									//$data['test1'] = $this->db::connection($database)->getSchemaBuilder()->getColumnListing('api_logging');
-									sleep(1); return $res -> withStatus(200) -> write(json_encode($data));
+									sleep(1); $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 								}
 								//ADD COLUMN//
 								$this->db::getSchemaBuilder()->disableForeignKeyConstraints();
@@ -345,7 +345,7 @@ class APICheckerCtrl extends Controller
 									}
 								});
 
-								sleep(1); return $res -> withStatus(200) -> write(json_encode($data));
+								sleep(1); $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 							}//if $updateFlag end
 						}
 						$preColumnName=$columnName;
@@ -358,9 +358,9 @@ class APICheckerCtrl extends Controller
 			//SOME FIX
 			$data['fix'] = $this->databaseFix();
 			if ($data['fix']['message'] !== '') $data['messages'][] = $data['fix']['message'];
-			sleep(1); return $res -> withStatus(200) -> write(json_encode($data));
+			sleep(1); $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	################################################
 	###################API STATUS MAIN##############
@@ -376,13 +376,13 @@ class APICheckerCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		$data['configuration']=TACGlobalConf::select('changeFlag')->first();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	################################################
 	###################API TIME MAIN##############
@@ -398,7 +398,7 @@ class APICheckerCtrl extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -406,7 +406,7 @@ class APICheckerCtrl extends Controller
 		$data['epoch']=time();
 		$data['timezone']=CMDRun::init()->setCmd('cat')->setAttr('/etc/timezone')->get();
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 	################################################
 	private function databaseFix()

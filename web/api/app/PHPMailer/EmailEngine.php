@@ -50,7 +50,12 @@ class EmailEngine
 
     // if ($name == 'feedback') $this->mail->Subject = $this->default_titles[$name] .' '. ucfirst($variables['type']);
 
-    extract($variables);
+    // Extract variables individually to avoid using deprecated extract() function
+    // This is safer and compatible with PHP 8.4+
+    foreach ($variables as $key => $value) {
+      $$key = $value;
+    }
+    
     ob_start();
     include( __DIR__ . '/EmailTemplates/'.$name.'.php');
     $this->mail->Body = ob_get_clean();

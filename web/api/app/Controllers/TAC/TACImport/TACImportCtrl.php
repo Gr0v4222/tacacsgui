@@ -21,13 +21,13 @@ class TACImportCtrl extends Controller
   	#check error#
   	if ($_SESSION['error']['status']){
   		$data['error']=$_SESSION['error'];
-  		return $res -> withStatus(401) -> write(json_encode($data));
+  		$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
   	}
   	//INITIAL CODE////END//
     //CHECK ACCESS TO THAT FUNCTION//START//
     if(!$this->checkAccess(1))
     {
-      return $res -> withStatus(403) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(403);
     }
     //CHECK ACCESS TO THAT FUNCTION//END//
     shell_exec( TAC_ROOT_PATH . '/main.sh delete temp');
@@ -40,7 +40,7 @@ class TACImportCtrl extends Controller
     if (!v::file()->readable()->size(null, '5MB')->validate($data['path'])){
       $data['error']['status']=true;
 			$data['error']['validation']=['file' => ['Incorrect file!']];
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
     }
 
     $data['csv'] = array_map('str_getcsv', file($data['path']));
@@ -52,7 +52,7 @@ class TACImportCtrl extends Controller
 
     if (in_array('id', $header)){
       $data['output'] = [['name'=>'Header Error', 'validation'=>['Please delete ID column']]];
-      return $res -> withStatus(200) -> write(json_encode($data));
+      $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
     }
 
     $data['output'] = [];
@@ -78,14 +78,14 @@ class TACImportCtrl extends Controller
         break;
       default:
         $data['output'] = [['name'=>'Server Error', 'validation'=>['Something goes wrong']]];
-        return $res -> withStatus(200) -> write(json_encode($data));
+        $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
     }
 
     if (array_search(true, array_column($data['output'], 'db_status')) !== false ){
       $data['changeConfiguration']=$this->changeConfigurationFlag(['unset' => 0]);
     }
 
-    return $res -> withStatus(200) -> write(json_encode($data));
+    $res->getBody()->write(json_encode($data)); return $res->withStatus(200);
   }
 
   public function checkHeader($header_main, $header_csv){

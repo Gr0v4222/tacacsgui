@@ -26,7 +26,7 @@ class AuthController extends Controller
 		$data['tacacs'] = ( $this->db::getSchemaBuilder()->hasTable('mavis_local') ) ? $this->MAVISLocal->change_passwd_gui() : 0;
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -39,7 +39,7 @@ class AuthController extends Controller
 
 		}
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	#########	POST Sign IN	#########
@@ -71,7 +71,7 @@ class AuthController extends Controller
 			$this->APILoggingCtrl->makeLogEntry($logEntry);
 			///LOGGING//end//
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 
 		//$data['test']=$_SESSION;
@@ -88,7 +88,7 @@ class AuthController extends Controller
 				$_SESSION['error']['status']=true;
 				$_SESSION['error']['message']='You was blocked for 5 minutes';
 				$data['error']=$_SESSION['error'];
-				return $res -> withStatus(401) -> write(json_encode($data));
+				$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 			}
 		}
 
@@ -105,7 +105,7 @@ class AuthController extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 
 		$auth = $this->auth->attempt(
@@ -119,7 +119,7 @@ class AuthController extends Controller
 			$logEntry = array('username' => $req->getParam('username'), 'uid' => 0, 'action' => 'Signin', 'section' => 'api auth', 'message' => 103);
 			$this->APILoggingCtrl->makeLogEntry($logEntry);
 			///LOGGING//end//
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		if ( !isset($_SESSION['ldap']) ){
 			$data['user']=APIUsers::from('api_users as au')->
@@ -144,7 +144,7 @@ class AuthController extends Controller
     $data['token'] = JWT::encode(['id' => $data['user']->id, 'username' => $data['user']->username], DB_PASSWORD, "HS256");
 
 		//$data['error']='authorised'; //$this->message->getError(false, 6, 0);
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Sign IN	###############END###########
 ################################################
@@ -161,7 +161,7 @@ class AuthController extends Controller
 		#check error#
 		if ($_SESSION['error']['status'] AND $data['info']['user']['changePasswd'] != 1){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -189,7 +189,7 @@ class AuthController extends Controller
 		if ($validation->failed()){
 			$data['error']['status']=true;
 			$data['error']['validation']=$validation->error_messages;
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		if ( !isset($_SESSION['ldap']) ){
@@ -198,13 +198,13 @@ class AuthController extends Controller
 			select(['au.*', 'aug.rights as rights'])->
 			where('au.id',$_SESSION['uid'])->first();
 		} else {
-			return $res -> withStatus(200) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 		}
 
 		if ($user->changePasswd == 0){
 			$data['error']['status']=true;
 			$data['error']['message']='Operation not permitted!';
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 
 		$data['status']=APIUsers::where('id',$_SESSION['uid'])->
@@ -215,7 +215,7 @@ class AuthController extends Controller
 		$_SESSION['changePasswd'] = 0;
 		$data['info']['user']['changePasswd'] = (isset($_SESSION['changePasswd'])) ? $_SESSION['changePasswd'] : 'empty';
 
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	CHANGE PASSWORD	###############END###########
 ################################################
@@ -233,7 +233,7 @@ class AuthController extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
@@ -244,7 +244,7 @@ class AuthController extends Controller
 
 		session_unset(); session_destroy();
 		$data['authorised']=$this->auth->check();
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 
 	#########	POST Sign OUT	#########
@@ -261,13 +261,13 @@ class AuthController extends Controller
 		#check error#
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
-			return $res -> withStatus(401) -> write(json_encode($data));
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
 
 		session_unset(); session_destroy();
 		$data['authorised']=$this->auth->check();
-		return $res -> withStatus(200) -> write(json_encode($data));
+		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
 	}
 ########	Sign OUT	###############END###########
 ################################################
