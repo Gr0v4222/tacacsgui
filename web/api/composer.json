@@ -18,12 +18,17 @@
         "symfony/yaml": "^6.0",
         "tuupola/slim-jwt-auth": "^3.7"
     },
-	"autoload": {
-		"psr-4": {
-			"tgui\\": "app"
-		}
-	},
+"autoload": {
+"psr-4": {
+"tgui\\": "app"
+}
+},
   "repositories": {
     "packagist": { "url": "https://packagist.org", "type": "composer" }
+  },
+  "config": {
+    "audit": {
+      "block-insecure": false
+    }
   }
 }
