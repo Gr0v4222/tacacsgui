@@ -129,9 +129,11 @@ class LDAP extends Controller
           for ($memOf=0; $memOf < count($memberOf); $memOf++) {
             $this->mavis->debugIn( $this->dPrefix() . 'User memberof: ' . $memberOf[$memOf] );
             // var_dump($memberOf[$memOf]);
-          	preg_match_all('/^CN=(.*?),.*/is', $memberOf[$memOf], $groupName);
+            $matchesCount = preg_match_all('/^CN=(.*?),.*/is', $memberOf[$memOf], $groupName);
             // var_dump($groupName);
-          	$groupList[] = $groupName[1][0];
+            if ($matchesCount > 0 && isset($groupName[1][0])) {
+            	$groupList[] = $groupName[1][0];
+            }
           }
           $groupList_fullNames = array_merge($groupList_fullNames, $memberOf);
         }
