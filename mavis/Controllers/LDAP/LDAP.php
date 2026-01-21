@@ -123,7 +123,7 @@ class LDAP extends Controller
           if ( !in_array( $group_temp_full, $groupList_fullNames ) ) $groupList_fullNames[] = $group_temp_full;
         }
 
-        if ( is_array(@$this->adUser->memberOf) ) {
+        if ( isset($this->adUser->memberOf) && is_array($this->adUser->memberOf) ) {
           for ($memOf=0; $memOf < count($this->adUser->memberof); $memOf++) {
             $this->mavis->debugIn( $this->dPrefix() . 'User memberof: ' . $this->adUser->memberof[$memOf] );
             // var_dump($this->adUser->memberof[$memOf]);
@@ -137,14 +137,14 @@ class LDAP extends Controller
         //var_dump($groupList); var_dump($groupList_fullNames); die; //gidnumber $search->where( $this->ldap->filter, $this->mavis->getUsername() )->first()
       } else {
         //General LDAP//
-        $this->mavis->debugIn( $this->dPrefix() . ( is_array(@$this->adUser->memberof) ? 'memberof, exist' : 'memberof, notexist') );
-        if ( is_array(@$this->adUser->memberOf) ) for ($i=0; $i < count($this->adUser->memberof); $i++) {
+        $this->mavis->debugIn( $this->dPrefix() . ( (isset($this->adUser->memberof) && is_array($this->adUser->memberof)) ? 'memberof, exist' : 'memberof, notexist') );
+        if ( isset($this->adUser->memberOf) && is_array($this->adUser->memberOf) ) for ($i=0; $i < count($this->adUser->memberof); $i++) {
           $this->mavis->debugIn( $this->dPrefix() . 'User memberof: ' . $this->adUser->memberof[$i] );
         	preg_match_all('/^CN=(.*?),.*/s', $this->adUser->memberof[$i], $groupName);
         	$groupList[] = $groupName[1][0];
         }
 
-        $groupList_fullNames = $this->adUser->memberof;
+        $groupList_fullNames = $this->adUser->memberof ?? [];
 
       }
 
