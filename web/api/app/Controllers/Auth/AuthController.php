@@ -130,7 +130,8 @@ class AuthController extends Controller
 			$data['info']['user']['username']=(isset($_SESSION['uname'])) ? $_SESSION['uname'] : 'empty';
 		} else {
 			$data['user']=$_SESSION['user'];
-			$data['user']['rights'] = $this->db::table('api_user_groups')->select()->where('id',$_SESSION['groupId'])->first()->rights;
+			$userGroup = $this->db::table('api_user_groups')->select()->where('id',$_SESSION['groupId'])->first();
+			$data['user']['rights'] = $userGroup ? $userGroup->rights : 0;
 		}
 
 		///LOGGING//start//

@@ -19,7 +19,22 @@ $_SESSION['error']['status']=true;
 $_SESSION['error']['authorized']=false;
 $_SESSION['error']['message']='Unknown Error';
 
-require __DIR__ . '/../config.php';
+// Check if config.php exists, if not show helpful error message
+$configPath = __DIR__ . '/../config.php';
+if (!file_exists($configPath)) {
+	http_response_code(500);
+	header('Content-Type: application/json');
+	echo json_encode([
+		'error' => [
+			'status' => true,
+			'message' => 'Configuration file is missing. Please copy config_example.php to config.php and configure the database settings.',
+			'details' => 'File not found: ' . $configPath
+		]
+	]);
+	exit;
+}
+
+require $configPath;
 require __DIR__ . '/../vendor/autoload.php';
 
 use tgui\Controllers\APIHA\HAGeneral;
