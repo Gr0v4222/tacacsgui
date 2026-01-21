@@ -266,8 +266,8 @@ class ConfDevices extends Controller
 
     $columns = []; //$this->APICheckerCtrl->getTableTitles('confM_devices'); //Array of all columnes that will used
     array_unshift( $columns, 'confM_devices.*' );
-    array_push( $columns, 'cre.name as creden_name',
-		 	'td.name as tgui_device',
+    array_push( $columns, $this->db::raw('MAX(cre.name) as creden_name'),
+		 	$this->db::raw('MAX(td.name) as tgui_device'),
 			$this->db::raw('(SELECT COUNT(*) FROM confM_bind_query_devices WHERE device_id = qd.device_id) as ref') );
 		if (($key = array_search('name', $columns)) !== false) {
     	unset($columns[$key]);
@@ -280,6 +280,7 @@ class ConfDevices extends Controller
 		//Filter end
 		$data['recordsTotal'] = Conf_Devices::count();
 		//Get temp data for Datatables with Fliter and some other parameters
+		// MySQL 8.0 ONLY_FULL_GROUP_BY fix: Use MAX() for joined columns not in GROUP BY
 		$tempData = Conf_Devices::select($columns)->
 			leftJoin('tac_devices as td', 'td.id', '=', 'confM_devices.tac_device')->
 			leftJoin('confM_credentials as cre', 'cre.id', '=', 'confM_devices.credential')->
