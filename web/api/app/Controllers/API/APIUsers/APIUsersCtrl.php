@@ -338,7 +338,7 @@ class APIUsersCtrl extends Controller
 		])->first();
 		$data['user']['groupRights'] = $_SESSION['groupRights'];
 		$data['changeConfiguration'] = $this->db->table('tac_global_settings')->select('changeFlag')->first()->changeFlag;
-		$data['token'] = JWT::encode(['id' => $data['user']->id, 'username' => $data['user']->username], "supersecretkeyyoushouldnotcommittogithub", "HS256");
+		$data['token'] = JWT::encode(['id' => $data['user']->id, 'username' => $data['user']->username], "supersecretkeyyoushouldnotcommittogithub", "HS256", "acme");
 
 
 		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);

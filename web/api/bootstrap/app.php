@@ -230,8 +230,8 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
 		//"path" => "/api/auth/123",
 		"ignore" => ["/auth", "/tacacs/user/change_passwd/change/", "/backup/download/", "/backup/upload/", '/ha/', '/export/', '/import/'],
 		"attribute" => "decoded_token_data",
-    "secret" => DB_PASSWORD,
-		"algorithm" => ["HS256"],
+    "secret" => ["acme" => DB_PASSWORD],
+		"algorithm" => ["acme" => "HS256"],
 		"secure" => false,
 		"error" => function ($response, $arguments) {
 				$data["status"] = "error";
