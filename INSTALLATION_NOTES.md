@@ -12,7 +12,7 @@ ERROR: List format 'freeze' cannot be used with the --outdated option.
 
 ### Root Cause
 
-In the `tgui_install` repository, file `/inc/install.sh` (line 269) contains:
+In the `tgui_install` repository (as of January 2026), file `/inc/install.sh` (line 269) contains:
 
 ```bash
 python3 -m pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | while read line; do \
