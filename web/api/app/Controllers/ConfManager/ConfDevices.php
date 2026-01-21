@@ -281,7 +281,7 @@ class ConfDevices extends Controller
 		$data['recordsTotal'] = Conf_Devices::count();
 		//Get temp data for Datatables with Fliter and some other parameters
 		// MySQL 8.0 ONLY_FULL_GROUP_BY fix: Use MAX() for joined columns not in GROUP BY
-		$tempData = Conf_Devices::select($columns)->
+		$tempData = Conf_Devices::
 			leftJoin('tac_devices as td', 'td.id', '=', 'confM_devices.tac_device')->
 			leftJoin('confM_credentials as cre', 'cre.id', '=', 'confM_devices.credential')->
 			leftJoin('confM_bind_query_devices as qd', 'qd.device_id', '=', 'confM_devices.id')->
