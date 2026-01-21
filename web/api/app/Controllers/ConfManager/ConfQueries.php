@@ -525,7 +525,7 @@ class ConfQueries extends Controller
 
 		$yaml = Yaml::dump( $pattern, 4 );
 		file_put_contents( TAC_ROOT_PATH . '/temp/' . $device->name . '.yaml', $yaml);
-		$debug = ( !!@$req->getParam('debug') ) ? ' -d' : '';
+		$debug = ( !!$req->getParam('debug') ) ? ' -d' : '';
 		try {
       $data['preview'] = CMDRun::init()->setCmd( MAINSCRIPT )->setAttr(['run', 'cmd', '/opt/tacacsgui/plugins/ConfigManager/cm.py', '-tq', TAC_ROOT_PATH . '/temp/' . $device->name . '.yaml' . $debug, '-m', '___', '-an'])->get();
     } catch (\Exception $e) {

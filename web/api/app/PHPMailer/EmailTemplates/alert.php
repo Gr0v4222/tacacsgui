@@ -78,31 +78,31 @@
                           <tr>
                             <td colspan="2" >
                               <table>
-                              <?php if(@$NAS): ?>
+                              <?php if(isset($NAS) && $NAS): ?>
                                 <tr>
                                   <td>NAS (device ip address):</td>
                                   <td><?php echo $NAS;?></td>
                                 </tr>
                               <?php endif; ?>
-                              <?php if(@$username): ?>
+                              <?php if(isset($username) && $username): ?>
                                 <tr>
                                   <td>Username:</td>
                                   <td><?php echo $username;?></td>
                                 </tr>
                               <?php endif; ?>
-                              <?php if(@$NAC): ?>
+                              <?php if(isset($NAC) && $NAC): ?>
                                 <tr>
                                   <td>NAC (user ip address):</td>
                                   <td><?php echo $NAC;?></td>
                                 </tr>
                               <?php endif; ?>
-                              <?php if(@$line): ?>
+                              <?php if(isset($line) && $line): ?>
                                 <tr>
                                   <td>Line:</td>
                                   <td><?php echo $line;?></td>
                                 </tr>
                               <?php endif; ?>
-                              <?php if(@$date): ?>
+                              <?php if(isset($date) && $date): ?>
                                 <tr>
                                   <td>Date:</td>
                                   <td><?php echo $date;?></td>

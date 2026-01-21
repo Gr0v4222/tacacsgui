@@ -250,14 +250,16 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
 		"error" => function ($response, $arguments) {
 				$data["status"] = "error";
 				$data["message"] = $arguments["message"];
+				$factory = new \Slim\Psr7\Factory\StreamFactory();
 				return $response
 						->withHeader("Content-Type", "application/json")
-						->withBody(\Slim\Psr7\Factory\StreamFactory::create(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)));
+						->withBody($factory->createStream(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)));
 		}
 ]));
 
 //$app->add($container->get('csrf')); //Turn on CSRF for all project//
 
-v::with('tgui\\Validation\\Rules\\');
+// v::with() is no longer needed in Respect\Validation v2.0+
+// Custom rules are automatically available through the namespace
 
 require __DIR__ . '/../app/routes.php';

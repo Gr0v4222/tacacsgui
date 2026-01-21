@@ -18,19 +18,19 @@ class HAGeneral extends Controller
   public $psk;
   private $rootpw;
 
-  public function isSlave(){
+  public static function isSlave(){
     $mainFile = '/opt/tgui_data/ha/ha-settings.yaml';
     if ( ! file_exists($mainFile) ) return false;
     $cfg = Yaml::parseFile($mainFile);
     return ($cfg['role'] == 2) ? $cfg['psk_s'] : false;
   }
-  public function isMaster(){
+  public static function isMaster(){
     $mainFile = '/opt/tgui_data/ha/ha-settings.yaml';
     if ( ! file_exists($mainFile) ) return false;
     $cfg = Yaml::parseFile($mainFile);
     return $cfg['role'] == 1;
   }
-  public function getRole(){
+  public static function getRole(){
     $mainFile = '/opt/tgui_data/ha/ha-settings.yaml';
     if ( ! file_exists($mainFile) ) return 0;
     $cfg = Yaml::parseFile($mainFile);
