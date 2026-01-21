@@ -141,7 +141,7 @@ class AuthController extends Controller
 		$data['authorised']=$this->auth->check();
 		$data['info']['user']['changePasswd'] = (isset($_SESSION['changePasswd'])) ? $_SESSION['changePasswd'] : 'empty';
 
-    $data['token'] = JWT::encode(['id' => $data['user']->id, 'username' => $data['user']->username], DB_PASSWORD, "HS256");
+    $data['token'] = JWT::encode(['id' => $data['user']->id, 'username' => $data['user']->username], DB_PASSWORD, "HS256", "acme");
 
 		//$data['error']='authorised'; //$this->message->getError(false, 6, 0);
 		$res->getBody()->write(json_encode($data)); return $res->withStatus(200);
