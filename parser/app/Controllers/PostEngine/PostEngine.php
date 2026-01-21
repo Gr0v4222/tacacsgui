@@ -112,10 +112,10 @@ class PostEngine extends Controller
     $postLogData = $data;
     if ( !isset($data['type']) ) $data['type'] = '';
     if (! $this->setAddresses($data['type'])) return false;
-    $this->engine->Subject = (isset($data['title'])) ? $data['title'] : 'Alert!';
     
     // PHP 8.4: Replace extract() with safer variable extraction
-    $title = $data['title'] ?? 'Alert!';
+    $title = (isset($data['title'])) ? $data['title'] : 'Alert!';
+    $this->engine->Subject = $title;
     $NAS = $data['NAS'] ?? null;
     $username = $data['username'] ?? null;
     $NAC = $data['NAC'] ?? null;
