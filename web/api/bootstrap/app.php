@@ -27,8 +27,7 @@ if (!file_exists($configPath)) {
 	echo json_encode([
 		'error' => [
 			'status' => true,
-			'message' => 'Configuration file is missing. Please copy config_example.php to config.php and configure the database settings.',
-			'details' => 'File not found: ' . $configPath
+			'message' => 'Configuration file is missing. Please copy config_example.php to config.php and configure the database settings.'
 		]
 	]);
 	exit;
