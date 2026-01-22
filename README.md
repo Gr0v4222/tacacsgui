@@ -2,6 +2,10 @@
 Free Access Control Server for Your Network Devices.
 GUI for powerful [tacacs daemon by Marc Huber](http://www.pro-bono-publico.de/projects/)
 
+## Recent Updates
+
+**JavaScript Frontend Rewrite** - The frontend has been completely rewritten with TypeScript source code. See [JAVASCRIPT_REWRITE.md](JAVASCRIPT_REWRITE.md) for details.
+
 ## How to install
 Please use [Installation Script](https://github.com/tacacsgui/tgui_install). Only **Ubuntu 18.04.x** supported.
 
