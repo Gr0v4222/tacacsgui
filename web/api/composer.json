@@ -17,7 +17,7 @@
         "doctrine/dbal": "^3.0 || ^4.0",
         "phpmailer/phpmailer": "^6.8",
         "guzzlehttp/guzzle": "^7.0",
-        "directorytree/ldaprecord": "^3.0",
+        "adldap2/adldap2": "^10.0",
         "symfony/yaml": "^6.0 || ^7.0",
         "jimtools/jwt-auth": "^1.0",
         "firebase/php-jwt": "^6.0"
