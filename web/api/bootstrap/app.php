@@ -80,17 +80,33 @@ try {
 	$capsule->schema();
 	$capsule->bootEloquent();
 	
-	// Test database connection
+	// Test both database connections
 	try {
 		$capsule->getConnection('default')->getPdo();
 	} catch (\Exception $e) {
 		http_response_code(500);
 		header('Content-Type: application/json');
-		error_log("Database connection failed: " . $e->getMessage());
+		error_log("Main database connection failed: " . $e->getMessage());
 		echo json_encode([
 			'error' => [
 				'status' => true,
 				'message' => 'Cannot connect to main database. Please check database credentials and ensure MySQL is running.',
+				'details' => (ini_get('display_errors') == 1) ? $e->getMessage() : 'Check error logs for details'
+			]
+		]);
+		exit;
+	}
+	
+	try {
+		$capsule->getConnection('logging')->getPdo();
+	} catch (\Exception $e) {
+		http_response_code(500);
+		header('Content-Type: application/json');
+		error_log("Logging database connection failed: " . $e->getMessage());
+		echo json_encode([
+			'error' => [
+				'status' => true,
+				'message' => 'Cannot connect to logging database. Please check that tgui_log database exists and is accessible.',
 				'details' => (ini_get('display_errors') == 1) ? $e->getMessage() : 'Check error logs for details'
 			]
 		]);

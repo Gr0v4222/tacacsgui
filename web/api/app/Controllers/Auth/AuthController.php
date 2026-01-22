@@ -25,7 +25,8 @@ class AuthController extends Controller
 		#check error#
 		// PHP 8.4 compatibility: Wrap database operations in try-catch
 		try {
-			$data['tacacs'] = ( $this->db::getSchemaBuilder()->hasTable('mavis_local') ) ? $this->MAVISLocal->change_passwd_gui() : 0;
+			$data['tacacs'] = ( $this->db::getSchemaBuilder()->hasTable('mavis_local') && $this->MAVISLocal ) 
+				? $this->MAVISLocal->change_passwd_gui() : 0;
 		} catch (\Exception $e) {
 			// If table check fails, default to 0
 			$data['tacacs'] = 0;
