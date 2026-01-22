@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  color: #333;
+  background-color: #f5f7fa;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Links */
+a {
+  color: #667eea;
+  text-decoration: none;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #5568d3;
+  }
+}
+
+/* Form Elements */
+input, select, textarea {
+  font-family: inherit;
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
