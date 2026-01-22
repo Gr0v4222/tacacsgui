@@ -318,7 +318,7 @@ class ConfQueries extends Controller
     $columns = $this->APICheckerCtrl->getTableTitles('confM_queries'); //Array of all columnes that will used
     array_unshift( $columns, 'id' );
     array_push( $columns, 'created_at', 'updated_at',
-			'models.name as model', 'cre.name as creden_name', $this->db::raw('count(*) as devices') );
+			$this->db::raw('MAX(models.name) as model'), $this->db::raw('MAX(cre.name) as creden_name'), $this->db::raw('count(*) as devices') );
 		$columns[array_search('name', $columns)] = 'confM_queries.name AS name';
 		$columns[array_search('id', $columns)] = 'confM_queries.id AS id';
 		$columns[array_search('created_at', $columns)] = 'confM_queries.created_at AS created_at';
@@ -330,6 +330,7 @@ class ConfQueries extends Controller
 		//Filter end
 		$data['recordsTotal'] = Conf_Queries::count();
 		//Get temp data for Datatables with Fliter and some other parameters
+		// MySQL 8.0 ONLY_FULL_GROUP_BY fix: Use MAX() for joined columns not in GROUP BY
 		$tempData = Conf_Queries::leftJoin('confM_models as models', 'models.id', '=', 'confM_queries.model')->
 			leftJoin('confM_credentials as cre', 'cre.id', '=', 'confM_queries.credential')->
 			leftJoin('confM_bind_query_devices as qd', 'qd.query_id', '=', 'confM_queries.id')->
