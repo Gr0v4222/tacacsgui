@@ -71,12 +71,60 @@ $container->set('settings', function() {
 	];
 });
 
-$capsule = new Capsule;
-$capsule->addConnection($container->get('settings')['db']['default'], 'default');
-$capsule->addConnection($container->get('settings')['db']['logging'], 'logging');
-$capsule->setAsGlobal();
-$capsule->schema();
-$capsule->bootEloquent();
+// PHP 8.4 compatibility: Wrap database connection in try-catch
+try {
+	$capsule = new Capsule;
+	$capsule->addConnection($container->get('settings')['db']['default'], 'default');
+	$capsule->addConnection($container->get('settings')['db']['logging'], 'logging');
+	$capsule->setAsGlobal();
+	$capsule->schema();
+	$capsule->bootEloquent();
+	
+	// Test both database connections
+	try {
+		$capsule->getConnection('default')->getPdo();
+	} catch (\Exception $e) {
+		http_response_code(500);
+		header('Content-Type: application/json');
+		error_log("Main database connection failed: " . $e->getMessage());
+		echo json_encode([
+			'error' => [
+				'status' => true,
+				'message' => 'Cannot connect to main database. Please check database credentials and ensure MySQL is running.',
+				'details' => (ini_get('display_errors') == 1) ? $e->getMessage() : 'Check error logs for details'
+			]
+		]);
+		exit;
+	}
+	
+	try {
+		$capsule->getConnection('logging')->getPdo();
+	} catch (\Exception $e) {
+		http_response_code(500);
+		header('Content-Type: application/json');
+		error_log("Logging database connection failed: " . $e->getMessage());
+		echo json_encode([
+			'error' => [
+				'status' => true,
+				'message' => 'Cannot connect to logging database. Please check that tgui_log database exists and is accessible.',
+				'details' => (ini_get('display_errors') == 1) ? $e->getMessage() : 'Check error logs for details'
+			]
+		]);
+		exit;
+	}
+} catch (\Exception $e) {
+	http_response_code(500);
+	header('Content-Type: application/json');
+	error_log("Database initialization failed: " . $e->getMessage());
+	echo json_encode([
+		'error' => [
+			'status' => true,
+			'message' => 'Database initialization failed. Please check your configuration.',
+			'details' => (ini_get('display_errors') == 1) ? $e->getMessage() : 'Check error logs for details'
+		]
+	]);
+	exit;
+}
 
 $container->set('db', function() use ($capsule) {
 	return $capsule;
