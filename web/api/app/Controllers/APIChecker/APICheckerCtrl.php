@@ -241,9 +241,17 @@ class APICheckerCtrl extends Controller
 			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
 		}
 		//INITIAL CODE////END//
-		//Sel self-check script//
-		CMDRun::init()->setCmd(MAINSCRIPT)->setAttr( [ 'self-test'] )->get();
-		/////////////////////////
+		
+		// PHP 8.4 compatibility: Wrap critical operations in try-catch
+		try {
+			//Sel self-check script//
+			CMDRun::init()->setCmd(MAINSCRIPT)->setAttr( [ 'self-test'] )->get();
+			/////////////////////////
+		} catch (\Exception $e) {
+			// Log error but continue - self-test is not critical for database check
+			error_log("Self-test command failed: " . $e->getMessage());
+		}
+		
 		// PHP 8.4 compatibility: Use null coalescing operator
 		$updateFlag = ($req->getParam('update') !== null) ? 1 : 0;
 		//var_dump( $this->db::getSchemaBuilder()->getColumnType('tac_users', 'username') ); die;

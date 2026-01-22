@@ -23,7 +23,14 @@ class AuthController extends Controller
 			'action' => 'Signin',
 		]);
 		#check error#
-		$data['tacacs'] = ( $this->db::getSchemaBuilder()->hasTable('mavis_local') ) ? $this->MAVISLocal->change_passwd_gui() : 0;
+		// PHP 8.4 compatibility: Wrap database operations in try-catch
+		try {
+			$data['tacacs'] = ( $this->db::getSchemaBuilder()->hasTable('mavis_local') ) ? $this->MAVISLocal->change_passwd_gui() : 0;
+		} catch (\Exception $e) {
+			// If table check fails, default to 0
+			$data['tacacs'] = 0;
+			error_log("MAVIS Local check failed: " . $e->getMessage());
+		}
 		if ($_SESSION['error']['status']){
 			$data['error']=$_SESSION['error'];
 			$res->getBody()->write(json_encode($data)); return $res->withStatus(401);
@@ -92,9 +99,18 @@ class AuthController extends Controller
 			}
 		}
 
-		if(!$this->db::schema()->hasTable('api_users'))
-		{
-			$this->APICheckerCtrl->myFirstTable();
+		// PHP 8.4 compatibility: Wrap table creation in try-catch
+		try {
+			if(!$this->db::schema()->hasTable('api_users'))
+			{
+				$this->APICheckerCtrl->myFirstTable();
+			}
+		} catch (\Exception $e) {
+			$_SESSION['error']['status'] = true;
+			$_SESSION['error']['message'] = 'Database initialization failed. Please check database connection and permissions.';
+			$data['error'] = $_SESSION['error'];
+			error_log("Database table creation failed: " . $e->getMessage());
+			$res->getBody()->write(json_encode($data)); return $res->withStatus(500);
 		}
 
 		$validation = $this->validator->validate($req, [
