@@ -31,9 +31,8 @@
         "packagist": { "url": "https://packagist.org", "type": "composer" }
     },
     "config": {
-        {
-        "platform-check": false
-        },
+        
+        "platform-check": false,
         "audit": {
             "block-insecure": false
         },
