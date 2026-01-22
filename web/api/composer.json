@@ -33,7 +33,7 @@
     "config": {
         {
         "platform-check": false
-        }
+        },
         "audit": {
             "block-insecure": false
         },
