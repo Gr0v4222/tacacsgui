@@ -7,3 +7,13 @@ temp/*
 plugins/ConfigManager/src/__pycache__/*
 plugins/ConfigManager/src/Models/__pycache__/*
 !temp/.gitkeep
+
+# Angular source and build artifacts
+web-src/node_modules/
+web-src/.angular/
+web-src/dist/
+web-build/
+web-backup/
+*.log
+.DS_Store
+Thumbs.db
