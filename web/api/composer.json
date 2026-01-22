@@ -1,35 +1,41 @@
 {
+    "name": "gr0v4222/tacacsgui-api",
+    "description": "TACACS+ GUI API - RESTful API for TACACS+ management",
+    "license": "proprietary",
     "require": {
         "php": ">=8.1",
         "slim/slim": "^4.0",
         "slim/psr7": "^1.6",
         "php-di/php-di": "^7.0",
-        "illuminate/database": "^10.0",
+        "illuminate/database": "^10.0 || ^11.0 || ^12.0",
         "respect/validation": "^2.0",
         "slim/csrf": "^1.3",
-        "spomky-labs/otphp": "^11.0",
-        "bacon/bacon-qr-code": "^2.0",
-        "irazasyed/telegram-bot-sdk": "^3.0",
+        "spomky-labs/otphp": "^11.0 || ^12.0",
+        "bacon/bacon-qr-code": "^2.0 || ^3.0",
+        "irazasyed/telegram-bot-sdk": "^3.0 || ^4.0",
         "php-smpp/php-smpp": "^1.2",
-        "doctrine/dbal": "^3.0",
+        "doctrine/dbal": "^3.0 || ^4.0",
         "phpmailer/phpmailer": "^6.8",
         "guzzlehttp/guzzle": "^7.0",
         "adldap2/adldap2": "^10.0",
-        "symfony/yaml": "^6.0",
+        "symfony/yaml": "^6.0 || ^7.0",
         "jimtools/jwt-auth": "^1.0",
         "firebase/php-jwt": "^6.0"
     },
-"autoload": {
-"psr-4": {
-"tgui\\": "app"
-}
-},
-  "repositories": {
-    "packagist": { "url": "https://packagist.org", "type": "composer" }
-  },
-  "config": {
-    "audit": {
-      "block-insecure": false
+    "autoload": {
+        "psr-4": {
+            "tgui\\": "app"
+        }
+    },
+    "repositories": {
+        "packagist": { "url": "https://packagist.org", "type": "composer" }
+    },
+    "config": {
+        "audit": {
+            "block-insecure": false
+        },
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
-  }
 }
