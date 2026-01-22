@@ -12,20 +12,24 @@ The codebase has been successfully updated to be compatible with PHP 8.0+ and sp
 
 **File:** `web/api/composer.json`
 
-- **PHP Requirement:** Updated from no requirement to `>=8.0`
+- **PHP Requirement:** `>=8.1` (required by illuminate/database v10+ and symfony/yaml v6+)
+- **Package Metadata:** Added name, description, and license fields
+- **Platform Configuration:** Added platform.php setting for consistent dependency resolution
 - **Slim Framework:** Upgraded from v3.8 to v4.x
   - Added `slim/psr7` ^1.6 for PSR-7 support
   - Added `php-di/php-di` ^7.0 for dependency injection
-- **Illuminate/Database:** Upgraded from v5.5 to v10.x
+- **Illuminate/Database:** Upgraded from v5.5 to v10.x (supports ^10.0 || ^11.0 || ^12.0)
+  - Note: v11 requires PHP 8.2+, v12 requires PHP 8.3+
 - **Respect/Validation:** Upgraded from v1.1 to v2.x
 - **Slim/CSRF:** Upgraded from v0.8.2 to v1.3
-- **Other Dependencies:** All updated to their latest PHP 8-compatible versions
-  - spomky-labs/otphp: v10.0 → v11.0
-  - bacon/bacon-qr-code: v1.0 → v2.0
-  - doctrine/dbal: v2.7 → v3.0
+- **Other Dependencies:** All updated to their latest PHP 8.1+ compatible versions
+  - spomky-labs/otphp: v10.0 → v11.0 (supports ^11.0 || ^12.0)
+  - bacon/bacon-qr-code: v1.0 → v2.0 (supports ^2.0 || ^3.0)
+  - doctrine/dbal: v2.7 → v3.0 (supports ^3.0 || ^4.0)
   - guzzlehttp/guzzle: v6.3 → v7.0
-  - symfony/yaml: v4.2 → v6.0
+  - symfony/yaml: v4.2 → v6.0 (supports ^6.0 || ^7.0, v7 requires PHP 8.2+)
   - adldap2/adldap2: v9.1 → v10.0
+  - irazasyed/telegram-bot-sdk: supports ^3.0 || ^4.0
 
 **Removed Dependencies:**
 - `webmozart/json` - Not compatible with PHP 8.0+, not used in codebase
@@ -180,7 +184,9 @@ While the code has been updated for PHP 8.4 compatibility, be aware of these beh
 
 ### Prerequisites
 
-- PHP 8.0 or higher (tested with PHP 8.3.6, compatible with PHP 8.4)
+- PHP 8.1 or higher (tested with PHP 8.1, 8.2, 8.3, and 8.4)
+  - **Note:** PHP 8.1 is the minimum requirement due to dependencies (illuminate/database v10+, symfony/yaml v6+)
+  - For PHP 8.0 support, older dependency versions would be required
 - Composer 2.0+
 - All required PHP extensions for Laravel/Illuminate Database
 
@@ -223,14 +229,16 @@ max_execution_time = 300
 
 ## Summary
 
-The codebase is now fully compatible with PHP 8.4. All critical breaking changes have been addressed:
+The codebase is now fully compatible with PHP 8.1, 8.2, 8.3, and 8.4. All critical breaking changes have been addressed:
 
 - ✅ Framework migrated (Slim 3 → 4)
-- ✅ Dependencies updated to PHP 8-compatible versions
+- ✅ Dependencies updated to PHP 8.1+ compatible versions with flexible version constraints
 - ✅ Deprecated functions removed
 - ✅ Error suppression operators eliminated
 - ✅ Array access safety improved
 - ✅ Response handling updated for PSR-7
 - ✅ Composer dependencies resolve successfully
 
-The application should run without errors on PHP 8.0, 8.1, 8.2, 8.3, and 8.4.
+**Minimum PHP Version:** 8.1 (required by illuminate/database v10+ and symfony/yaml v6+)
+
+The application should run without errors on PHP 8.1, 8.2, 8.3, and 8.4.
