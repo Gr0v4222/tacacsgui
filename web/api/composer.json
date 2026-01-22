@@ -35,10 +35,7 @@
             "block-insecure": false
         },
         "allow-plugins": {
-            "*": true
-        },
-        "platform": {
-            "php": "8.1.0"
+            "php-http/discovery": true
         }
     }
 }
